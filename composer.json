@@ -7,7 +7,10 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/lumen-framework": "5.2.*",
-        "vlucas/phpdotenv": "~2.2"
+        "vlucas/phpdotenv": "~2.2",
+        "kassner/log-parser": "~1.0",
+        "donatj/phpuseragentparser": "*",
+        "geoip2/geoip2" : "~2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
