@@ -16,11 +16,17 @@ class ApiController extends Controller
 
     public function index()
     {
+        return view('index');
+    }
+
+    public function getCollecteddata()
+    {
 
     }
 
-    public function collect( Request $request )
+    public function anyCollect( Request $request )
     {
+        dd($request->toArray());
         $parser = new \Kassner\LogParser\LogParser();
         $parser->setFormat( $_ENV['ACCESS_LOG_FORMAT'] );
 
@@ -28,13 +34,13 @@ class ApiController extends Controller
             $userSpec = $parser->parse( $line );
             $userSpec->device = parse_user_agent( $userSpec->HeaderUserAgent );
 
-            $city = new Reader( __DIR__ . '/../Database/GeoLite2-City.mmdb' );
-            $country = new Reader( __DIR__ . '/../Database/GeoLite2-Country.mmdb' );
+            $city = new Reader( database_path() . '/GeoLite2-City.mmdb' );
 
+            $geoRecord =  $city->city( $userSpec->host );
 
             $userSpec->location = [
-                'city'    => $city->city( $userSpec->host )->city->name,
-                'country' => $country->country( $userSpec->host )->country->name,
+                'city'    => $geoRecord->city->name,
+                'country' => $geoRecord->country->name,
             ];
 
             $entry[] = $userSpec;
