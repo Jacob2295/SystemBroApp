@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ApiController;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -11,6 +13,7 @@
 |
 */
 
+$app->post('/collect', 'ApiController@collect');
 $app->get('/', function () use ($app) {
     return $app->version();
 });
