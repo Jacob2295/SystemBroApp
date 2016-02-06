@@ -32,10 +32,12 @@ class MaxMingUpdater extends Command
 
     /**
      * Thanks to this guy on stackoverflow! http://stackoverflow.com/a/4000569
+     *
      * Copy remote file over HTTP one small chunk at a time.
      *
      * @param $infile  string The full URL to the remote file
      * @param $outfile string The path where to save the file
+     * @return int bytes transferred
      */
     function copyfile_chunked( $infile, $outfile )
     {
