@@ -3,7 +3,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class MaxMingUpdater extends Command
+class MaxMindUpdater extends Command
 {
     /**
      * The name and signature of the console command.
@@ -25,7 +25,17 @@ class MaxMingUpdater extends Command
         set_time_limit( 0 );
 
         $this->copyfile_chunked( 'http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz',
-            database_path() );
+            database_path() . '/GeoLite2-City.mmdb.gz' );
+
+        shell_exec('gunzip -f ' . database_path() . '/' . 'GeoLite2-City.mmdb.gz');
+
+        if(file_get_contents('http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.md5') == md5_file(database_path() . '/GeoLite2-City.mmdb')) {
+            $this->info("Database update successfully completed");
+        } else {
+            print (PHP_EOL);
+            $this->error('There was an error with the database update -
+                    the md5 hashes do not match');
+        }
 
     }
 
