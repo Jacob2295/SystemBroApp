@@ -47,8 +47,9 @@ class ApiController extends Controller
                 ];
             }
         }
+        //TODO: part out error logs to a different collection
 
-        return $this->mongoCollection->batchInsert( $request );
+        return $this->mongoCollection->insert( $request );
     }
 
 }
