@@ -13,7 +13,7 @@ class ApiController extends Controller
 
     public function __construct()
     {
-        $this->mongoCollection = ( new \MongoClient() )->selectDB( 'SystemBro' )->selectCollection( 'stats' );
+        $this->mongoCollection = ( new \MongoClient() )->selectDB( 'SystemBro' );
     }
 
     public function index()
@@ -47,9 +47,15 @@ class ApiController extends Controller
                 ];
             }
         }
-        //TODO: part out error logs to a different collection
 
-        return $this->mongoCollection->insert( $request );
+        $errorLogs = $request['errorLog'];
+        unset($request['errorLog']);
+
+        $result['analytics'] = $this->mongoCollection->selectCollection( 'stats' )->insert( $request );
+
+        $result['errorLogs'] = $this->mongoCollection->selectCollection( 'errorLogs' )->insert($errorLogs);
+
+        return $result;
     }
 
 }
