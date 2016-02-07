@@ -1,0 +1,21 @@
+.container {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 60%;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #E6E6EA;
+}
+
+.title {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.server {
+    margin: 10px 10px;
+}
+
+.stat {
+    text-align: center;
+    border-right: 1px solid rgba(210, 210, 210, 0.62);
+}
