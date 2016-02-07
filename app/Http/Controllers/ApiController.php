@@ -32,20 +32,19 @@ class ApiController extends Controller
     {
         parse_str( $request->getContent(), $request );
 
-
         if ( count( $request['accessLog'] ) > 0 ) {
             $this->loggingModel->insertAccessLogging( $request['accessLog'] );
         }
         unset( $request['accessLog'] );
 
-        if ( count( $request['errorLog'] ) > 0 ) {
+        if ( isset($request['errorLog']) && count( $request['errorLog'] ) > 0 ) {
             $this->loggingModel->insertErrorLogging( $request['errorLog'] );
+            unset( $request['errorLog'] );
         }
-        unset( $request['errorLog'] );
 
         $this->mongoCollection->selectCollection( 'stats' )->insert( $request );
 
-        return true;
+        return 'inserted';
     }
 
 }
