@@ -5,6 +5,7 @@
     padding: 10px;
     background-color: white;
     border: 1px solid #E6E6EA;
+    min-width: 675px;
 }
 
 .title {
@@ -18,4 +19,16 @@
 .stat {
     text-align: center;
     border-right: 1px solid rgba(210, 210, 210, 0.62);
+}
+
+.stat:last-child {
+    border-right: none;
+}
+
+.message-header {
+    background: rgb(82, 165, 222);
+}
+
+.column+.column {
+    margin-left: 0;
 }

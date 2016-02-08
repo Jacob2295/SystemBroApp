@@ -5,6 +5,8 @@
     <title>SystemBro</title>
     <script src="/js/jquery-2.2.0.min.js"></script>
     <script src="/js/vue.js"></script>
+    <script src="/js/js.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
     <link href="/css/bulma.min.css" rel="stylesheet">
     <link href="/css/css.css" rel="stylesheet">
 
@@ -47,40 +49,9 @@
                             <div class="statValue">First Val</div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="server">
-            <div class="message">
-                <div class="message-header">
-                    Hello World
-                </div>
-                <div class="message-body">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Pellentesque risus mi, tempus quis placerat ut, porta nec
-                    nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam
-                    gravida purus diam, et dictum felis venenatis efficitur.
-                    Aenean ac eleifend lacus, in mollis lectus. Donec sodales,
-                    arcu et sollicitudin porttitor, tortor urna tempor ligula,
-                    id porttitor mi magna a neque. Donec dui urna, vehicula et
-                    sem eget, facilisis sodales sem.
-                </div>
-            </div>
-        </div>
-        <div class="server">
-            <div class="message">
-                <div class="message-header">
-                    Hello World
-                </div>
-                <div class="message-body">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Pellentesque risus mi, tempus quis placerat ut, porta nec
-                    nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam
-                    gravida purus diam, et dictum felis venenatis efficitur.
-                    Aenean ac eleifend lacus, in mollis lectus. Donec sodales,
-                    arcu et sollicitudin porttitor, tortor urna tempor ligula,
-                    id porttitor mi magna a neque. Donec dui urna, vehicula et
-                    sem eget, facilisis sodales sem.
+                    <div class="chart">
+                        <canvas id="myChart" width="400" height="75"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
