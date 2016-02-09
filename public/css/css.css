@@ -52,6 +52,7 @@
     padding: 5px;
     border: 1px solid grey;
     width: 30%;
+    vertical-align: top;
 }
 
 .cities {
@@ -61,5 +62,9 @@
 }
 
 ul.countries > li {
+    margin-bottom: 10px;
+}
+
+.analytics {
     margin-bottom: 10px;
 }

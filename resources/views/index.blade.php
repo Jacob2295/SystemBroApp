@@ -12,7 +12,6 @@
 
 </head>
 <body>
-
 <div class="container">
     <h1 class="title">Systems</h1>
 
@@ -98,7 +97,7 @@
             </div>
         </div>
 
-    </div>
+        </div>
     <h1 class="title">Error Log</h1>
     <div class="errorLog">
 
