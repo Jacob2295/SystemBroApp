@@ -56,17 +56,55 @@
             </div>
         </div>
     </div>
-
+    <h1 class="title">Analytics</h1>
     <div class="analytics">
+        <div class="box geo">
+            <div class="box-title">
+                Geographical
+            </div>
+            <div class="box-content">
+                <ul class="countries">
+                    <li class="country"> United States
+                        <ul class="cities">
+                            <li>New York</li>
+                            <li>Eudj dsnfsm emnf</li>
+                            <li>emfwf wefnw eff</li>
+                            <li>kwef kwef</li>
+                            <li>wefkjf wef</li>
+                            <li>weffwefkj ewf</li>
+                            <li>...</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-title">
+                Browser Stats
+            </div>
+            <div class="box-content">
+                hello
+            </div>
+        </div>
+
+
+        <div class="box">
+            <div class="box-title">
+                HTTP Resp. Codes
+            </div>
+            <div class="box-content">
+                hello
+            </div>
+        </div>
 
     </div>
-
+    <h1 class="title">Error Log</h1>
     <div class="errorLog">
 
     </div>
 
 </div>
-
 
 
 </body>

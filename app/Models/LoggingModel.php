@@ -20,18 +20,18 @@ class LoggingModel {
         $toBeInserted = [];
         foreach ( $alogs as $line ) {
             $userSpec = $parser->parse( $line );
-            $userStat['device'] = parse_user_agent( $userSpec->HeaderUserAgent );
+            $userSpec->device = parse_user_agent( $userSpec->HeaderUserAgent );
 
             $city = new Reader( database_path() . '/GeoLite2-City.mmdb' );
 
             $geoRecord = $city->city( $userSpec->host );
 
-            $userStat['location'] = [
+            $userSpec->location = [
                 'city'    => $geoRecord->city->name,
                 'country' => $geoRecord->country->name,
             ];
-            $userStat['host'] = $userSpec->host;
-            $toBeInserted[] = $userStat;
+
+            $toBeInserted[] = $userSpec;
         }
 
         $this->mongoCollection->selectCollection('accessLogs')->batchInsert($toBeInserted);

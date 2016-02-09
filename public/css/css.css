@@ -32,3 +32,34 @@
 .column+.column {
     margin-left: 0;
 }
+
+.box-title {
+    bottom: 15px;
+    position: relative;
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    display: inline;
+}
+
+.box-content {
+    position: relative;
+    bottom: 14px;
+}
+
+.box {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid grey;
+    width: 30%;
+}
+
+.cities {
+    padding-left: 12px;
+    margin-left: 15px;
+    border-left: 1px solid grey;
+}
+
+ul.countries > li {
+    margin-bottom: 10px;
+}
