@@ -5,12 +5,14 @@ class LoggingModel {
 
     public function __construct()
     {
-        $this->mongoCollection = ( new \MongoClient() )->selectDB( 'SystemBro' );
+        $this->mongoCollectionForErrors = ( new \MongoClient() )->selectDB( 'SystemBro' )->selectCollection( 'errorLogs' );
+        $this->mongoCollectionForAccess = ( new \MongoClient() )->selectDB( 'SystemBro' )->selectCollection('accessLogs');
     }
 
     public function insertErrorLogging( array $elogs )
     {
-        $this->mongoCollection->selectCollection( 'errorLogs' )->batchInsert($elogs);
+        $elogs['createdAt'] = time();
+        $this->mongoCollectionForErrors->batchInsert($elogs);
     }
 
     public function insertAccessLogging( array $alogs )
@@ -30,11 +32,20 @@ class LoggingModel {
                 'city'    => $geoRecord->city->name,
                 'country' => $geoRecord->country->name,
             ];
-
+            $userSpec->createdAt = time();
             $toBeInserted[] = $userSpec;
         }
 
-        $this->mongoCollection->selectCollection('accessLogs')->batchInsert($toBeInserted);
+        $this->mongoCollectionForAccess->batchInsert($toBeInserted);
+    }
+
+    public function getUniqueVisits()
+    {
+        return [
+            'day' => count( $this->mongoCollectionForAccess->distinct( 'host', [ 'stamp' => [ '$gt' => time() - 86400 ] ] ) ),
+            'week' => count( $this->mongoCollectionForAccess->distinct( 'host', [ 'stamp' => [ '$gt' => time() - 86400 * 7 ] ] ) ),
+            'month' => count( $this->mongoCollectionForAccess->distinct( 'host', [ 'stamp' => [ '$gt' => time() - 86400 * 30 ] ] ) ),
+        ];
     }
 
 }

@@ -12,10 +12,13 @@ class ApiController extends Controller
 
     private $loggingModel;
 
+    private $stats;
+
     public function __construct()
     {
         $this->mongoCollection = ( new \MongoClient() )->selectDB( 'SystemBro' );
         $this->loggingModel = new LoggingModel();
+        $this->stats = new Stats();
     }
 
     public function index()
@@ -30,19 +33,19 @@ class ApiController extends Controller
 
     public function collect( Request $request )
     {
-        parse_str( $request->getContent(), $request );
+        parse_str( $request->getContent(), $payload );
 
-        if ( count( $request['accessLog'] ) > 0 ) {
-            $this->loggingModel->insertAccessLogging( $request['accessLog'] );
+        if ( count( $payload['accessLog'] ) > 0 ) {
+            $this->loggingModel->insertAccessLogging( $payload['accessLog'] );
         }
-        unset( $request['accessLog'] );
+        unset( $payload['accessLog'] );
 
-        if ( isset($request['errorLog']) && count( $request['errorLog'] ) > 0 ) {
-            $this->loggingModel->insertErrorLogging( $request['errorLog'] );
-            unset( $request['errorLog'] );
+        if ( isset($payload['errorLog']) && count( $payload['errorLog'] ) > 0 ) {
+            $this->loggingModel->insertErrorLogging( $payload['errorLog'] );
+            unset( $payload['errorLog'] );
         }
 
-        $this->mongoCollection->selectCollection( 'stats' )->insert( $request );
+        $this->stats->insert( $payload );
 
         return 'inserted';
     }
