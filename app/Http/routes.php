@@ -14,6 +14,7 @@ use App\Http\Controllers\ApiController;
 */
 
 $app->post('/collect', 'ApiController@collect');
+$app->get('/retrieve', 'ApiController@RetrieveCollectedData');
 $app->get('/', 'ApiController@index');
 //$app->get('/', function () use ($app) {
 //    return $app->version();

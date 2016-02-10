@@ -50,7 +50,7 @@ class ApiController extends Controller
      */
     public function RetrieveCollectedData()
     {
-
+        return $this->stats->grabStats();
     }
 
     /**
@@ -62,14 +62,18 @@ class ApiController extends Controller
     {
         parse_str( $request->getContent(), $payload );
 
-        $payload['from'] = [
+        $payload['fromServer'] = [
             'hostname' => $payload['hostname'],
             'ip'       => $request->ip()
         ];
 
-        $this->loggingModel->insertAccessLogging( $payload['accessLog'], $payload['from'] );
+        if (isset($payload['accessLog'])) {
+            $this->loggingModel->insertAccessLogging( $payload['accessLog'], $payload['fromServer'] );
+        }
 
-        $this->loggingModel->insertErrorLogging( $payload['errorLog'], $payload['from'] );
+        if (isset($payload['errorLog'])) {
+            $this->loggingModel->insertErrorLogging( $payload['errorLog'], $payload['fromServer'] );
+        }
 
 
         unset( $payload['accessLog'], $payload['errorLog'] );

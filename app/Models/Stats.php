@@ -20,7 +20,17 @@ class Stats {
      */
     private function returnMostRecentRecord()
     {
-        return $this->findOne([],['createdAt'=>-1]);
+        return $this->mongoCollection->aggregate([
+            ['$match' => [
+                "fromServer" => ['$ne' => null]
+            ]], ['$sort' => [
+                "createdAt" => 1
+            ]],
+            ['$group' => [
+                "_id" => '$fromServer.hostname',
+
+            ]]
+        ]);
     }
 
     /**
@@ -66,8 +76,21 @@ class Stats {
     public function grabStats()
     {
         return [
-            'transfer' => $this->retrieveTransfer()
+            'mostRecent' => $this->returnMostRecentRecord()
+//            'transfer' => $this->retrieveTransfer()
         ];
+    }
+
+    function formatBytes( $size, $precision = 2 )
+    {
+        $size = preg_replace( "/[^0-9,.]/", "", $size );
+        if ( $size == 0 || $size == null ) {
+            return "0B";
+        }
+        $base = log( $size ) / log( 1024 );
+        $suffixes = [ 'B', 'KB', 'MB', 'GB', 'TB' ];
+
+        return round( pow( 1024, $base - floor( $base ) ), $precision ) . $suffixes[(int)floor( $base )];
     }
 
 
