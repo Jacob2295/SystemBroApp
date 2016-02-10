@@ -71,9 +71,9 @@ class ApiController extends Controller
             $this->loggingModel->insertAccessLogging( $payload['accessLog'], $payload['fromServer'] );
         }
 
-        if (isset($payload['errorLog'])) {
-            $this->loggingModel->insertErrorLogging( $payload['errorLog'], $payload['fromServer'] );
-        }
+//        if (isset($payload['errorLog'])) {
+//            $this->loggingModel->insertErrorLogging( $payload['errorLog'], $payload['fromServer'] );
+//        }
 
 
         unset( $payload['accessLog'], $payload['errorLog'] );

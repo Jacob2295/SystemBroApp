@@ -5,14 +5,15 @@ namespace App\Models;
  * Class Stats
  * @package App\Models
  */
-class Stats {
+class Stats
+{
 
     /**
      * Initialize mongoClient
      */
     public function __construct()
     {
-        $this->mongoCollection = ( new \MongoClient() )->selectDB( 'SystemBro' )->selectCollection('stats');
+        $this->mongoCollection = ( new \MongoClient() )->selectDB( 'SystemBro' )->selectCollection( 'stats' );
     }
 
     /**
@@ -20,17 +21,34 @@ class Stats {
      */
     private function returnMostRecentRecord()
     {
-        return $this->mongoCollection->aggregate([
-            ['$match' => [
-                "fromServer" => ['$ne' => null]
-            ]], ['$sort' => [
-                "createdAt" => 1
-            ]],
-            ['$group' => [
-                "_id" => '$fromServer.hostname',
-
-            ]]
-        ]);
+        return $this->mongoCollection->aggregate( [
+            [
+                '$match' => [
+                    "fromServer" => [ '$ne' => null ]
+                ]
+            ],
+            [
+                '$sort' => [
+                    "createdAt" => 1
+                ]
+            ],
+            [
+                '$group' => [
+                    "_id"          => '$fromServer.hostname',
+                    'memFree'      => [ '$first' => '$memory.free' ],
+                    'memTotal'     => [ '$first' => '$memory.total' ],
+                    'bandwidthIn'  => [ '$first' => '$bandwidth.in' ],
+                    'bandwidthOut' => [ '$first' => '$bandwidth.out' ],
+                    'diskFree'     => [ '$first' => '$disk.free' ],
+                    'diskTotal'    => [ '$first' => '$disk.total' ],
+                    'cpu1min'      => [ '$first' => '$cpu.1minAverage' ],
+                    'ip'           => [ '$first' => '$fromServer.ip' ],
+                    'hostname'     => [ '$first' => '$fromServer.hostname' ],
+                    'activeSsh'    => [ '$first' => '$activeSsh' ],
+                    'uptime'       => [ '$first' => '$uptime' ],
+                ],
+            ]
+        ] )['result'];
     }
 
     /**
@@ -39,9 +57,9 @@ class Stats {
      *
      * @return array
      */
-    private function findOne( array $query, array $sort = [])
+    private function findOne( array $query, array $sort = [ ] )
     {
-        return iterator_to_array($this->mongoCollection->find($query)->limit(1)->sort($sort));
+        return iterator_to_array( $this->mongoCollection->find( $query )->limit( 1 )->sort( $sort ) );
     }
 
     /**
@@ -50,7 +68,7 @@ class Stats {
     public function insert( array $stats )
     {
         $stats['createdAt'] = time();
-        $this->mongoCollection->insert($stats);
+        $this->mongoCollection->insert( $stats );
     }
 
     /**
@@ -59,9 +77,11 @@ class Stats {
     public function retrieveTransfer()
     {
         $latestRecord = $this->returnMostRecentRecord();
-        $oneWeekAgo = $this->findOne( [ 'timeCreated'=> ['$gte' => strtotime('-1 week') ] ], [ 'timeCreated' => 1 ] );
-        $oneMonthAgo = $this->findOne( [ 'timeCreated'=> ['$gte' => strtotime('-1 month') ] ], [ 'timeCreated' => 1 ] );
-        $oneDayAgo = $this->findOne( [ 'timeCreated'=> ['$gte' => strtotime('-1 day') ] ], [ 'timeCreated' => 1 ] );
+        $oneWeekAgo = $this->findOne( [ 'timeCreated' => [ '$gte' => strtotime( '-1 week' ) ] ],
+            [ 'timeCreated' => 1 ] );
+        $oneMonthAgo = $this->findOne( [ 'timeCreated' => [ '$gte' => strtotime( '-1 month' ) ] ],
+            [ 'timeCreated' => 1 ] );
+        $oneDayAgo = $this->findOne( [ 'timeCreated' => [ '$gte' => strtotime( '-1 day' ) ] ], [ 'timeCreated' => 1 ] );
 
         return [
             'monthlyTransfer' => $latestRecord['transferOut'] - $oneMonthAgo['transferOut'],
