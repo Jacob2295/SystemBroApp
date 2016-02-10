@@ -1,32 +1,66 @@
 <?php
 namespace App\Models;
 use GeoIp2\Database\Reader;
-class LoggingModel {
 
+/**
+ * Class LoggingModel
+ * @package App\Models
+ */
+class Logging {
+
+    /**
+     * LoggingModel constructor.
+     */
     public function __construct()
     {
         $this->mongoCollectionForErrors = ( new \MongoClient() )->selectDB( 'SystemBro' )->selectCollection( 'errorLogs' );
         $this->mongoCollectionForAccess = ( new \MongoClient() )->selectDB( 'SystemBro' )->selectCollection('accessLogs');
     }
 
-    public function insertErrorLogging( array $elogs )
+    /**
+     * @param array $elogs
+     * @param       $fromServer
+     */
+    public function insertErrorLogging( array $elogs, $fromServer )
     {
+        if (! ( count($elogs) > 0 )) {
+            return;
+        }
+        $elogs['fromServer'] = $fromServer;
         $elogs['createdAt'] = time();
         $this->mongoCollectionForErrors->batchInsert($elogs);
     }
 
-    public function insertAccessLogging( array $alogs )
+    /**
+     * @param array $alogs
+     * @param       $fromServer
+     *
+     * @throws \Kassner\LogParser\FormatException
+     */
+    public function insertAccessLogging( array $alogs, $fromServer )
     {
+
+        if (! ( count($alogs) > 0 )) {
+            return;
+        }
+
         $parser = new \Kassner\LogParser\LogParser();
         $parser->setFormat( '%h %l %u %t "%r" %>s %O "%{Referer}i" \"%{User-Agent}i"' );
         $toBeInserted = [];
         foreach ( $alogs as $line ) {
             $userSpec = $parser->parse( $line );
+
+            if ($userSpec->host === '::1') {
+                continue;
+            }
+
             $userSpec->device = parse_user_agent( $userSpec->HeaderUserAgent );
 
             $city = new Reader( database_path() . '/GeoLite2-City.mmdb' );
 
             $geoRecord = $city->city( $userSpec->host );
+
+            $userSpec->fromServer = $fromServer;
 
             $userSpec->location = [
                 'city'    => $geoRecord->city->name,
@@ -39,6 +73,9 @@ class LoggingModel {
         $this->mongoCollectionForAccess->batchInsert($toBeInserted);
     }
 
+    /**
+     * @return array
+     */
     public function getUniqueVisits()
     {
         return [
