@@ -13,22 +13,7 @@ class Logging {
      */
     public function __construct()
     {
-        $this->mongoCollectionForErrors = ( new \MongoClient() )->selectDB( 'SystemBro' )->selectCollection( 'errorLogs' );
         $this->mongoCollectionForAccess = ( new \MongoClient() )->selectDB( 'SystemBro' )->selectCollection('accessLogs');
-    }
-
-    /**
-     * @param array $elogs
-     * @param       $fromServer
-     */
-    public function insertErrorLogging( array $elogs, $fromServer )
-    {
-        if (! ( count($elogs) > 0 )) {
-            return;
-        }
-        $elogs['fromServer'] = $fromServer;
-        $elogs['createdAt'] = time();
-        $this->mongoCollectionForErrors->batchInsert($elogs);
     }
 
     /**

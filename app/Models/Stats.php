@@ -5,6 +5,10 @@ namespace App\Models;
  * Class Stats
  * @package App\Models
  */
+/**
+ * Class Stats
+ * @package App\Models
+ */
 class Stats
 {
 
@@ -19,7 +23,7 @@ class Stats
     /**
      * @return array
      */
-    private function returnMostRecentRecord()
+    private function returnMostRecentRecords()
     {
         return $this->mongoCollection->aggregate( [
             [
@@ -29,7 +33,7 @@ class Stats
             ],
             [
                 '$sort' => [
-                    "createdAt" => 1
+                    "createdAt" => -1
                 ]
             ],
             [
@@ -43,9 +47,9 @@ class Stats
                     'diskTotal'    => [ '$first' => '$disk.total' ],
                     'cpu1min'      => [ '$first' => '$cpu.1minAverage' ],
                     'ip'           => [ '$first' => '$fromServer.ip' ],
-                    'hostname'     => [ '$first' => '$fromServer.hostname' ],
                     'activeSsh'    => [ '$first' => '$activeSsh' ],
                     'uptime'       => [ '$first' => '$uptime' ],
+                    'createdAt'    => [ '$first' => '$createdAt' ],
                 ],
             ]
         ] )['result'];
@@ -76,18 +80,19 @@ class Stats
      */
     public function retrieveTransfer()
     {
-        $latestRecord = $this->returnMostRecentRecord();
-        $oneWeekAgo = $this->findOne( [ 'timeCreated' => [ '$gte' => strtotime( '-1 week' ) ] ],
-            [ 'timeCreated' => 1 ] );
-        $oneMonthAgo = $this->findOne( [ 'timeCreated' => [ '$gte' => strtotime( '-1 month' ) ] ],
-            [ 'timeCreated' => 1 ] );
-        $oneDayAgo = $this->findOne( [ 'timeCreated' => [ '$gte' => strtotime( '-1 day' ) ] ], [ 'timeCreated' => 1 ] );
+        foreach ( $this->returnMostRecentRecords() as $individualServerRecord ) {
 
-        return [
-            'monthlyTransfer' => $latestRecord['transferOut'] - $oneMonthAgo['transferOut'],
-            'weeklyTransfer'  => $latestRecord['transferOut'] - $oneWeekAgo['transferOut'],
-            'dailyTransfer'   => $latestRecord['transferOut'] - $oneDayAgo['transferOut']
-        ];
+            $previousRecords = $this->getRecordFromNDaysAgo(['-1 day', '-1 month', '-1 week'], $individualServerRecord['_id']);
+
+            foreach ($previousRecords as $timeSpan => $previousRecord) {
+                $bandwidthTotal[$timeSpan] =
+                    ($individualServerRecord['bandwidthOut'] - $previousRecord['bandwidth']['out']) +
+                    ($individualServerRecord['bandwidthIn'] - $previousRecord['bandwidth']['in']);
+            }
+        }
+
+
+        return $bandwidthTotal;
     }
 
     /**
@@ -96,22 +101,46 @@ class Stats
     public function grabStats()
     {
         return [
-            'mostRecent' => $this->returnMostRecentRecord()
-//            'transfer' => $this->retrieveTransfer()
+            'mostRecent' => $this->retrieveTransfer()
         ];
     }
 
-    function formatBytes( $size, $precision = 2 )
+    /**
+     * @param array $daysAgo
+     * @param       $hostname
+     *
+     * @return mixed
+     */
+    public function getRecordFromNDaysAgo( array $daysAgo, $hostname )
     {
-        $size = preg_replace( "/[^0-9,.]/", "", $size );
-        if ( $size == 0 || $size == null ) {
-            return "0B";
+        foreach ($daysAgo as $timeSpan) {
+            $records[$timeSpan] = $this->mongoCollection->findOne( [
+                'createdAt'           => [ '$gte' => strtotime( $timeSpan ) ],
+                'fromServer.hostname' => $hostname
+            ] );
         }
-        $base = log( $size ) / log( 1024 );
-        $suffixes = [ 'B', 'KB', 'MB', 'GB', 'TB' ];
 
-        return round( pow( 1024, $base - floor( $base ) ), $precision ) . $suffixes[(int)floor( $base )];
+        return $records;
     }
 
 
+}
+
+
+/**
+ * @param     $size
+ * @param int $precision
+ *
+ * @return string
+ */
+function formatBytes( $size, $precision = 2 )
+{
+    $size = preg_replace( "/[^0-9,.]/", "", $size );
+    if ( $size == 0 || $size == null ) {
+        return "0B";
+    }
+    $base = log( $size ) / log( 1024 );
+    $suffixes = [ 'B', 'KB', 'MB', 'GB', 'TB' ];
+
+    return round( pow( 1024, $base - floor( $base ) ), $precision ) . $suffixes[(int)floor( $base )];
 }
