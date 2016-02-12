@@ -3,10 +3,15 @@ namespace App\Models;
 
 /**
  * Class Stats
+ *
  * @package App\Models
  */
+use App\GlobalHelpers;
+use App\Helpers;
+
 /**
  * Class Stats
+ *
  * @package App\Models
  */
 class Stats
@@ -17,7 +22,7 @@ class Stats
      */
     public function __construct()
     {
-        $this->mongoCollection = ( new \MongoClient() )->selectDB( 'SystemBro' )->selectCollection( 'stats' );
+        $this->mongoCollection = (new \MongoClient())->selectDB('SystemBro')->selectCollection('stats');
     }
 
     /**
@@ -25,10 +30,10 @@ class Stats
      */
     private function returnMostRecentRecords()
     {
-        return $this->mongoCollection->aggregate( [
+        return $this->mongoCollection->aggregate([
             [
                 '$match' => [
-                    "fromServer" => [ '$ne' => null ]
+                    "fromServer" => ['$ne' => NULL]
                 ]
             ],
             [
@@ -39,20 +44,20 @@ class Stats
             [
                 '$group' => [
                     "_id"          => '$fromServer.hostname',
-                    'memFree'      => [ '$first' => '$memory.free' ],
-                    'memTotal'     => [ '$first' => '$memory.total' ],
-                    'bandwidthIn'  => [ '$first' => '$bandwidth.in' ],
-                    'bandwidthOut' => [ '$first' => '$bandwidth.out' ],
-                    'diskFree'     => [ '$first' => '$disk.free' ],
-                    'diskTotal'    => [ '$first' => '$disk.total' ],
-                    'cpu1min'      => [ '$first' => '$cpu.1minAverage' ],
-                    'ip'           => [ '$first' => '$fromServer.ip' ],
-                    'activeSsh'    => [ '$first' => '$activeSsh' ],
-                    'uptime'       => [ '$first' => '$uptime' ],
-                    'createdAt'    => [ '$first' => '$createdAt' ],
+                    'memFree'      => ['$first' => '$memory.free'],
+                    'memTotal'     => ['$first' => '$memory.total'],
+                    'bandwidthIn'  => ['$first' => '$bandwidth.in'],
+                    'bandwidthOut' => ['$first' => '$bandwidth.out'],
+                    'diskFree'     => ['$first' => '$disk.free'],
+                    'diskTotal'    => ['$first' => '$disk.total'],
+                    'cpu1min'      => ['$first' => '$cpu.1minAverage'],
+                    'ip'           => ['$first' => '$fromServer.ip'],
+                    'activeSsh'    => ['$first' => '$activeSsh'],
+                    'uptime'       => ['$first' => '$uptime'],
+                    'createdAt'    => ['$first' => '$createdAt'],
                 ],
             ]
-        ] )['result'];
+        ])['result'];
     }
 
     /**
@@ -61,18 +66,18 @@ class Stats
      *
      * @return array
      */
-    private function findOne( array $query, array $sort = [ ] )
+    private function findOne(array $query, array $sort = [])
     {
-        return iterator_to_array( $this->mongoCollection->find( $query )->limit( 1 )->sort( $sort ) );
+        return iterator_to_array($this->mongoCollection->find($query)->limit(1)->sort($sort));
     }
 
     /**
      * @param array $stats
      */
-    public function insert( array $stats )
+    public function insert(array $stats)
     {
         $stats['createdAt'] = time();
-        $this->mongoCollection->insert( $stats );
+        $this->mongoCollection->insert($stats);
     }
 
     /**
@@ -80,9 +85,11 @@ class Stats
      */
     public function retrieveTransfer()
     {
-        foreach ( $this->returnMostRecentRecords() as $individualServerRecord ) {
+        foreach ($this->returnMostRecentRecords() as $individualServerRecord) {
 
             $previousRecords = $this->getRecordFromNDaysAgo(['-1 day', '-1 month', '-1 week'], $individualServerRecord['_id']);
+
+            dd(GlobalHelpers::local_min($this->getRecordsFromNTillNow('-1 month', $individualServerRecord['_id'], ['bandwidth.out' => 1])));
 
             foreach ($previousRecords as $timeSpan => $previousRecord) {
                 $bandwidthTotal[$timeSpan] =
@@ -111,36 +118,39 @@ class Stats
      *
      * @return mixed
      */
-    public function getRecordFromNDaysAgo( array $daysAgo, $hostname )
+    public function getRecordFromNDaysAgo(array $daysAgo, $hostname)
     {
+        $records = [];
+
         foreach ($daysAgo as $timeSpan) {
-            $records[$timeSpan] = $this->mongoCollection->findOne( [
-                'createdAt'           => [ '$gte' => strtotime( $timeSpan ) ],
+            $records[$timeSpan] = $this->mongoCollection->findOne([
+                'createdAt'           => ['$gte' => strtotime($timeSpan)],
                 'fromServer.hostname' => $hostname
-            ] );
+            ]);
         }
 
         return $records;
     }
 
 
-}
+    public function getRecordsFromNTillNow($daysAgo, $hostname, array $projection)
+    {
+        $items = iterator_to_array($this->mongoCollection->find([
+            'createdAt'           => ['$gte' => strtotime($daysAgo)],
+            'fromServer.hostname' => $hostname
+        ], $projection));
 
+        foreach ($items as &$item) {
+            unset($item['_id']);
 
-/**
- * @param     $size
- * @param int $precision
- *
- * @return string
- */
-function formatBytes( $size, $precision = 2 )
-{
-    $size = preg_replace( "/[^0-9,.]/", "", $size );
-    if ( $size == 0 || $size == null ) {
-        return "0B";
+            array_walk_recursive($item, function ($leaf) use (&$item) {
+                $item = (int)$leaf;
+            });
+        }
+
+        return array_values($items);
+
     }
-    $base = log( $size ) / log( 1024 );
-    $suffixes = [ 'B', 'KB', 'MB', 'GB', 'TB' ];
 
-    return round( pow( 1024, $base - floor( $base ) ), $precision ) . $suffixes[(int)floor( $base )];
+
 }
