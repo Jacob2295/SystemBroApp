@@ -205,6 +205,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="statUnit">
+                            <div class="title">
+                                HTTP response codes
+                            </div>
+                            <div class="body">
+                                <div style="width: 100%; height: 100%;">
+                                    <canvas id="httpCodes" style="width: 100%; height: auto;"></canvas>
+                                    <div id="js-legend" class="chart-legend"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
