@@ -2,14 +2,14 @@ body {
     background-color: #F5F7FA;
 }
 
-.container {
+.ui.container {
     margin-top: 30px;
     margin-bottom: 30px;
-    width: 60%;
+    width: 83%; !important;
     padding: 10px;
     background-color: white;
     border: 1px solid #E6E6EA;
-    min-width: 675px;
+    /*min-width: 675px;*/
 }
 
 .systemProfile {
@@ -53,4 +53,32 @@ hr {
 .stats {
     display: flex;
     justify-content: center;
+}
+
+.statUnit {
+    border: 1px solid grey;
+    margin-bottom: 20px;
+}
+
+.statUnit .body {
+    display: table;
+    margin: 0 auto;
+}
+
+.statUnit .title {
+    bottom: 10px;
+    position: relative;
+    background-color: white;
+    padding-left: 5px;
+    margin-left: 5px;
+    padding-right: 5px;
+    display: inline;
+
+}
+
+td {
+    max-width: 236px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
