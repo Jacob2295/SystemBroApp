@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Stats;
 use \Illuminate\Http\Request;
-use App\Models\Logging;
+use App\Models\Analytics;
 
 /**
  * Class ApiController
@@ -18,7 +18,7 @@ class ApiController extends Controller
     private $mongoCollection;
 
     /**
-     * @var Logging
+     * @var Analytics
      */
     private $loggingModel;
 
@@ -33,7 +33,7 @@ class ApiController extends Controller
     public function __construct()
     {
         $this->mongoCollection = ( new \MongoClient() )->selectDB( 'SystemBro' );
-        $this->loggingModel = new Logging();
+        $this->loggingModel = new Analytics();
         $this->stats = new Stats();
     }
 

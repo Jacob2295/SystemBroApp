@@ -7,6 +7,7 @@ namespace App\Models;
  * @package App\Models
  */
 use App\GlobalHelpers;
+use App\Models\Analytics;
 
 /**
  * Class Stats
@@ -64,6 +65,9 @@ class Stats
     public function formatRecent($aggregates)
     {
         foreach ($aggregates as &$aggregate) {
+
+            $aggregate['analytics'] = (new Analytics())->aggregateAnalytics($aggregate);
+
             $bandwidth = $this->retrieveTransfer($aggregate);
 
             $aggregate['formatted'] = GlobalHelpers::arrFormatBytes(
@@ -80,6 +84,8 @@ class Stats
             $aggregate['formatted']['memPercent'] = ceil((($aggregate['memTotal'] - $aggregate['memFree']) / $aggregate['memTotal']) * 100) . '%';
 
             $aggregate['formatted']['diskPercent'] = ceil((($aggregate['diskTotal'] - $aggregate['diskFree']) / $aggregate['diskTotal']) * 100) . '%';
+
+            $aggregate['cpu1min'] = $aggregate['cpu1min'] . '%';
 
             $aggregate['formatted']['bandwidth'] = $bandwidth;
 
@@ -218,7 +224,7 @@ class Stats
                 }
             }
             $stat['memory'] = array_pop($stat['memory']);
-            $stat['cpu'] = array_pop($stat['cpu']);
+            $stat['cpu'] = array_pop($stat['cpu']) . '%';
         }
 
         return array_values($stats);
