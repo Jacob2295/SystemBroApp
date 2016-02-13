@@ -97,9 +97,9 @@ $(document).ready(function () {
         }
     });
     vue.getData();
-    //window.setInterval(function(){
-    //    vue.getData();
-    //    console.log('Refreshed data');
-    //}, 30000);
+    window.setInterval(function(){
+        vue.getData();
+        console.log('Refreshed data');
+    }, 30000);
 
 });
