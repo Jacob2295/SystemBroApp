@@ -8,6 +8,7 @@ namespace App\Models;
  */
 use App\GlobalHelpers;
 use App\Models\Analytics;
+use Carbon\Carbon;
 
 /**
  * Class Stats
@@ -89,6 +90,7 @@ class Stats
 
             $aggregate['formatted']['bandwidth'] = $bandwidth;
 
+            $aggregate['createdAt'] = Carbon::createFromTimestamp($aggregate['createdAt'])->diffForHumans();
             $aggregate['historicalRecords'] = $this->historicalMemAndCpu($aggregate);
 
             unset($aggregate['memFree'], $aggregate['memTotal'],

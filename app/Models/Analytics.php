@@ -112,6 +112,16 @@ class Analytics
 
     }
 
+    public function getHttpCodeCount()
+    {
+        return $this->mongoCollectionForAccess->aggregate([
+            '$group' => [
+                '_id'   => '$status',
+                'count' => ['$sum' => 1]
+            ]
+        ])['result'];
+    }
+
     /**
      * @param $aggregate
      * @return array
@@ -119,9 +129,10 @@ class Analytics
     public function aggregateAnalytics($aggregate)
     {
         return [
-            'uniqueVisits'      => $this->getUniqueVisits($aggregate),
-            'totalRequestCount' => $this->getTotalRequestCount($aggregate),
-            'recentVisitors'    => $this->getRecentVisitors()
+            'uniqueVisits'          => $this->getUniqueVisits($aggregate),
+            'totalRequestCount'     => $this->getTotalRequestCount($aggregate),
+            'recentVisitors'        => $this->getRecentVisitors(),
+            'HttpResponseCodeCount' => $this->getHttpCodeCount(),
         ];
     }
 
