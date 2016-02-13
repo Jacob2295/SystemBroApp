@@ -65,14 +65,6 @@
                                 SSH session(s)
                             </div>
                         </div>
-                        <div class="statistic">
-                            <div class="value">
-                                @{{collectionItem.formatted.bandwidth.month}}
-                            </div>
-                            <div class="label">
-                                bandwidth usage this month
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -195,6 +187,14 @@
                                         </div>
                                         <div class="value">
                                             @{{collectionItem.formatted.bandwidth.week}}
+                                        </div>
+                                    </div>
+                                    <div class="statistic">
+                                        <div class="label">
+                                            month
+                                        </div>
+                                        <div class="value">
+                                            @{{collectionItem.formatted.bandwidth.month}}
                                         </div>
                                     </div>
                                 </div>
