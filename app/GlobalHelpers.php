@@ -47,4 +47,17 @@ class GlobalHelpers
 
         return array_sum($maxima);
     }
+
+    public static function arrFormatBytes(array $bytes)
+    {
+        $result = [];
+
+        foreach($bytes as $key => $byte) {
+            $result[$key] = GlobalHelpers::formatBytes($byte);
+        }
+
+        return $result;
+
+    }
+    
 }

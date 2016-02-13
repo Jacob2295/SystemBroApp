@@ -46,8 +46,6 @@ class Stats
                     "_id"          => '$fromServer.hostname',
                     'memFree'      => ['$first' => '$memory.free'],
                     'memTotal'     => ['$first' => '$memory.total'],
-                    'bandwidthIn'  => ['$first' => '$bandwidth.in'],
-                    'bandwidthOut' => ['$first' => '$bandwidth.out'],
                     'diskFree'     => ['$first' => '$disk.free'],
                     'diskTotal'    => ['$first' => '$disk.total'],
                     'cpu1min'      => ['$first' => '$cpu.1minAverage'],
@@ -58,6 +56,27 @@ class Stats
                 ],
             ]
         ])['result'];
+    }
+
+    public function formatRecent($aggregates)
+    {
+        foreach($aggregates as &$aggregate) {
+
+            $aggregate['formatted'] = GlobalHelpers::arrFormatBytes(
+                [
+                    'memFree' => (int)$aggregate['memFree'],
+                    'memTotal'=>(int)$aggregate['memTotal'],
+                    'diskFree' => (int)$aggregate['diskFree'],
+                    'diskTotal' => (int)$aggregate['diskTotal']
+                ]
+            );
+
+            unset($aggregate['memFree'],$aggregate['memTotal'],
+                $aggregate['diskFree'],$aggregate['diskTotal']);
+
+        }
+
+        return $aggregates;
     }
 
     /**
@@ -91,7 +110,7 @@ class Stats
         foreach ($this->returnMostRecentRecords() as $individualServerRecord) {
 
             foreach (['month'=>'-1 month', 'week'=>'-1 week', 'day'=>'-1 day'] as $key => $timeSpan) {
-                $bandwidthConsumed[$key] = GlobalHelpers::local_min($this->getRecordsFromNTillNow($timeSpan, $individualServerRecord['_id'], ['bandwidth.out', 'bandwidth.in']));
+                $bandwidthConsumed[$key] = GlobalHelpers::formatBytes(GlobalHelpers::local_min($this->getRecordsFromNTillNow($timeSpan, $individualServerRecord['_id'], ['bandwidth.out', 'bandwidth.in'])));
 
             }
         }
@@ -105,7 +124,8 @@ class Stats
     public function grabStats()
     {
         return [
-            'mostRecent' => $this->retrieveTransfer()
+            'mostRecent' => $this->formatRecent($this->returnMostRecentRecords()),
+            'bandwidth' => $this->retrieveTransfer()
         ];
     }
 
