@@ -177,29 +177,29 @@
                                 Bandwidth used this...
                             </div>
                             <div class="body">
-                                <div class="ui mini statistics">
+                                <div class="ui mini horizontal statistics">
                                     <div class="statistic">
-                                        <div class="label">
-                                            day
-                                        </div>
                                         <div class="value">
                                             @{{collectionItem.formatted.bandwidth.day}}
                                         </div>
+                                        <div class="label">
+                                            day
+                                        </div>
                                     </div>
                                     <div class="statistic">
-                                        <div class="label">
-                                            week
-                                        </div>
                                         <div class="value">
                                             @{{collectionItem.formatted.bandwidth.week}}
                                         </div>
+                                        <div class="label">
+                                            week
+                                        </div>
                                     </div>
                                     <div class="statistic">
-                                        <div class="label">
-                                            month
-                                        </div>
                                         <div class="value">
                                             @{{collectionItem.formatted.bandwidth.month}}
+                                        </div>
+                                        <div class="label">
+                                            month
                                         </div>
                                     </div>
                                 </div>
