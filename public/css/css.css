@@ -21,8 +21,36 @@ body {
     background-color: red;
     width: 200px;
     float: left;
+    display: none;
 }
 
 .main {
-    background-color: #00b5ad;
+    /*background-color: #00b5ad;*/
+}
+
+.faint {
+    display: inline;
+    opacity: 0.6;
+}
+
+/* https://css-tricks.com/examples/hrs/*/
+hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.title {
+    font-weight: bold;
+    display: inline;
+}
+
+.rightTitle {
+    float: right
+}
+
+.mainContent {
+    display: flex;
+    justify-content: center;
 }

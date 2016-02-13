@@ -142,9 +142,7 @@ class Stats
      */
     public function grabStats()
     {
-        return [
-            'mostRecent' => $this->formatRecent($this->returnMostRecentRecords()),
-        ];
+        return $this->formatRecent($this->returnMostRecentRecords());
     }
 
     /**
