@@ -76,6 +76,8 @@ class Stats
                 ]
             );
 
+            $aggregate['uptime'] = GlobalHelpers::secondsToTime($aggregate['uptime']);
+
             $aggregate['formatted']['memPercent'] = ceil(( ($aggregate['memTotal'] -  $aggregate['memFree']) / $aggregate['memTotal'] ) * 100) . '%';
 
             $aggregate['formatted']['diskPercent'] = ceil(( ($aggregate['diskTotal'] -  $aggregate['diskFree']) / $aggregate['diskTotal'] ) * 100) . '%';
