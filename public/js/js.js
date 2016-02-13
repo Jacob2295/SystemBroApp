@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    Chart.defaults.global.animation = false;
     $('.sidebar').height($('.main').height()+1);
 
     var vue = new Vue({
@@ -60,7 +60,10 @@ $(document).ready(function() {
             }
         }
     });
-
     vue.getData();
+    window.setInterval(function(){
+        vue.getData();
+        console.log('Refreshed data');
+    }, 30000);
 
 });
