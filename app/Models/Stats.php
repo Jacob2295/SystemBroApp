@@ -85,10 +85,13 @@ class Stats
      */
     public function retrieveTransfer()
     {
+
+        $bandwidthConsumed = [];
+
         foreach ($this->returnMostRecentRecords() as $individualServerRecord) {
 
-            foreach (['-1 month', '-1 week', '-1 day'] as $timeSpan) {
-                $bandwidthConsumed[$timeSpan] = GlobalHelpers::local_min($this->getRecordsFromNTillNow('-1 month', $individualServerRecord['_id'], ['bandwidth.out', 'bandwidth.in']));
+            foreach (['month'=>'-1 month', 'week'=>'-1 week', 'day'=>'-1 day'] as $key => $timeSpan) {
+                $bandwidthConsumed[$key] = GlobalHelpers::local_min($this->getRecordsFromNTillNow($timeSpan, $individualServerRecord['_id'], ['bandwidth.out', 'bandwidth.in']));
 
             }
         }
