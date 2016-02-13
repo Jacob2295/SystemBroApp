@@ -9,7 +9,7 @@ body {
     padding: 10px;
     background-color: white;
     border: 1px solid #E6E6EA;
-    /*min-width: 675px;*/
+    min-width: 1192px;
 }
 
 .systemProfile {
@@ -78,7 +78,7 @@ hr {
 }
 
 td {
-    max-width: 236px;
+    max-width: 136px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
