@@ -7,7 +7,6 @@ namespace App\Models;
  * @package App\Models
  */
 use App\GlobalHelpers;
-use App\Helpers;
 
 /**
  * Class Stats
@@ -43,16 +42,16 @@ class Stats
             ],
             [
                 '$group' => [
-                    "_id"          => '$fromServer.hostname',
-                    'memFree'      => ['$first' => '$memory.free'],
-                    'memTotal'     => ['$first' => '$memory.total'],
-                    'diskFree'     => ['$first' => '$disk.free'],
-                    'diskTotal'    => ['$first' => '$disk.total'],
-                    'cpu1min'      => ['$first' => '$cpu.1minAverage'],
-                    'ip'           => ['$first' => '$fromServer.ip'],
-                    'activeSsh'    => ['$first' => '$activeSsh'],
-                    'uptime'       => ['$first' => '$uptime'],
-                    'createdAt'    => ['$first' => '$createdAt'],
+                    "_id"       => '$fromServer.hostname',
+                    'memFree'   => ['$first' => '$memory.free'],
+                    'memTotal'  => ['$first' => '$memory.total'],
+                    'diskFree'  => ['$first' => '$disk.free'],
+                    'diskTotal' => ['$first' => '$disk.total'],
+                    'cpu1min'   => ['$first' => '$cpu.1minAverage'],
+                    'ip'        => ['$first' => '$fromServer.ip'],
+                    'activeSsh' => ['$first' => '$activeSsh'],
+                    'uptime'    => ['$first' => '$uptime'],
+                    'createdAt' => ['$first' => '$createdAt'],
                 ],
             ]
         ])['result'];
@@ -64,28 +63,30 @@ class Stats
      */
     public function formatRecent($aggregates)
     {
-        foreach($aggregates as &$aggregate) {
+        foreach ($aggregates as &$aggregate) {
             $bandwidth = $this->retrieveTransfer($aggregate);
 
             $aggregate['formatted'] = GlobalHelpers::arrFormatBytes(
                 [
-                    'memFree' => (int)$aggregate['memFree'],
-                    'memTotal'=>(int)$aggregate['memTotal'],
-                    'diskFree' => (int)$aggregate['diskFree'],
+                    'memFree'   => (int)$aggregate['memFree'],
+                    'memTotal'  => (int)$aggregate['memTotal'],
+                    'diskFree'  => (int)$aggregate['diskFree'],
                     'diskTotal' => (int)$aggregate['diskTotal'],
                 ]
             );
 
             $aggregate['uptime'] = GlobalHelpers::secondsToTime($aggregate['uptime']);
 
-            $aggregate['formatted']['memPercent'] = ceil(( ($aggregate['memTotal'] -  $aggregate['memFree']) / $aggregate['memTotal'] ) * 100) . '%';
+            $aggregate['formatted']['memPercent'] = ceil((($aggregate['memTotal'] - $aggregate['memFree']) / $aggregate['memTotal']) * 100) . '%';
 
-            $aggregate['formatted']['diskPercent'] = ceil(( ($aggregate['diskTotal'] -  $aggregate['diskFree']) / $aggregate['diskTotal'] ) * 100) . '%';
+            $aggregate['formatted']['diskPercent'] = ceil((($aggregate['diskTotal'] - $aggregate['diskFree']) / $aggregate['diskTotal']) * 100) . '%';
 
             $aggregate['formatted']['bandwidth'] = $bandwidth;
 
-            unset($aggregate['memFree'],$aggregate['memTotal'],
-                $aggregate['diskFree'],$aggregate['diskTotal']);
+            $aggregate['historicalRecords'] = $this->historicalMemAndCpu($aggregate);
+
+            unset($aggregate['memFree'], $aggregate['memTotal'],
+                $aggregate['diskFree'], $aggregate['diskTotal']);
 
         }
 
@@ -120,10 +121,10 @@ class Stats
 
         $bandwidthConsumed = [];
 
-            foreach (['month'=>'-1 month', 'week'=>'-1 week', 'day'=>'-1 day'] as $key => $timeSpan) {
-                $bandwidthConsumed[$key] = GlobalHelpers::formatBytes(GlobalHelpers::local_min($this->getRecordsFromNTillNow($timeSpan, $individualServerRecord['_id'], ['bandwidth.out', 'bandwidth.in'])));
+        foreach (['month' => '-1 month', 'week' => '-1 week', 'day' => '-1 day'] as $key => $timeSpan) {
+            $bandwidthConsumed[$key] = GlobalHelpers::formatBytes(GlobalHelpers::local_min($this->getRecordsFromNTillNow($timeSpan, $individualServerRecord['_id'], ['bandwidth.out', 'bandwidth.in'])));
 
-            }
+        }
 
         return $bandwidthConsumed;
     }
@@ -192,6 +193,21 @@ class Stats
         }
 
         return array_values($items);
+
+    }
+
+
+    public function historicalMemAndCpu($aggregate)
+    {
+        $items = iterator_to_array($this->mongoCollection->find([
+            'fromServer.hostname' => $aggregate['_id']
+        ], [
+            'memory.free', 'memory.total', 'cpu.1minAverage'
+        ])->sort(
+            [
+                'createdAt' => -1
+            ]
+        )->limit(10));
 
     }
 
