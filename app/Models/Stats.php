@@ -58,18 +58,29 @@ class Stats
         ])['result'];
     }
 
+    /**
+     * @param $aggregates
+     * @return mixed
+     */
     public function formatRecent($aggregates)
     {
         foreach($aggregates as &$aggregate) {
+            $bandwidth = $this->retrieveTransfer($aggregate);
 
             $aggregate['formatted'] = GlobalHelpers::arrFormatBytes(
                 [
                     'memFree' => (int)$aggregate['memFree'],
                     'memTotal'=>(int)$aggregate['memTotal'],
                     'diskFree' => (int)$aggregate['diskFree'],
-                    'diskTotal' => (int)$aggregate['diskTotal']
+                    'diskTotal' => (int)$aggregate['diskTotal'],
                 ]
             );
+
+            $aggregate['formatted']['memPercent'] = ceil(( ($aggregate['memTotal'] -  $aggregate['memFree']) / $aggregate['memTotal'] ) * 100) . '%';
+
+            $aggregate['formatted']['diskPercent'] = ceil(( ($aggregate['diskTotal'] -  $aggregate['diskFree']) / $aggregate['diskTotal'] ) * 100) . '%';
+
+            $aggregate['formatted']['bandwidth'] = $bandwidth;
 
             unset($aggregate['memFree'],$aggregate['memTotal'],
                 $aggregate['diskFree'],$aggregate['diskTotal']);
@@ -102,18 +113,15 @@ class Stats
     /**
      * @return array
      */
-    public function retrieveTransfer()
+    public function retrieveTransfer($individualServerRecord)
     {
 
         $bandwidthConsumed = [];
-
-        foreach ($this->returnMostRecentRecords() as $individualServerRecord) {
 
             foreach (['month'=>'-1 month', 'week'=>'-1 week', 'day'=>'-1 day'] as $key => $timeSpan) {
                 $bandwidthConsumed[$key] = GlobalHelpers::formatBytes(GlobalHelpers::local_min($this->getRecordsFromNTillNow($timeSpan, $individualServerRecord['_id'], ['bandwidth.out', 'bandwidth.in'])));
 
             }
-        }
 
         return $bandwidthConsumed;
     }
@@ -125,7 +133,6 @@ class Stats
     {
         return [
             'mostRecent' => $this->formatRecent($this->returnMostRecentRecords()),
-            'bandwidth' => $this->retrieveTransfer()
         ];
     }
 
@@ -150,6 +157,12 @@ class Stats
     }
 
 
+    /**
+     * @param       $daysAgo
+     * @param       $hostname
+     * @param array $projection
+     * @return array
+     */
     public function getRecordsFromNTillNow($daysAgo, $hostname, array $projection)
     {
         $items = iterator_to_array($this->mongoCollection->find([
