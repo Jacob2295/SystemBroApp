@@ -1,4 +1,7 @@
 $(document).ready(function() {
+
+    $('.sidebar').height($('.main').height()+1);
+
     var ctx = $("#myChart").get(0).getContext("2d");
     Chart.defaults.global.responsive = true;
     var data = {

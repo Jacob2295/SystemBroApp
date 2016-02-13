@@ -1,3 +1,7 @@
+body {
+    background-color: #F5F7FA;
+}
+
 .container {
     margin-top: 30px;
     margin-bottom: 30px;
@@ -8,63 +12,17 @@
     min-width: 675px;
 }
 
-.title {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+.systemProfile {
+    /*display: flex;*/
 }
 
-.server {
-    margin: 10px 10px;
+.sidebar {
+    height: inherit;
+    background-color: red;
+    width: 200px;
+    float: left;
 }
 
-.stat {
-    text-align: center;
-    border-right: 1px solid rgba(210, 210, 210, 0.62);
-}
-
-.stat:last-child {
-    border-right: none;
-}
-
-.message-header {
-    background: rgb(82, 165, 222);
-}
-
-.column+.column {
-    margin-left: 0;
-}
-
-.box-title {
-    bottom: 15px;
-    position: relative;
-    background-color: white;
-    padding-left: 5px;
-    padding-right: 5px;
-    display: inline;
-}
-
-.box-content {
-    position: relative;
-    bottom: 14px;
-}
-
-.box {
-    display: inline-block;
-    padding: 5px;
-    border: 1px solid grey;
-    width: 30%;
-    vertical-align: top;
-}
-
-.cities {
-    padding-left: 12px;
-    margin-left: 15px;
-    border-left: 1px solid grey;
-}
-
-ul.countries > li {
-    margin-bottom: 10px;
-}
-
-.analytics {
-    margin-bottom: 10px;
+.main {
+    background-color: #00b5ad;
 }
