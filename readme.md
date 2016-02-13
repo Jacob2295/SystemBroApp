@@ -1,28 +1,24 @@
-# Lumen PHP Framework
+# SystemBro (see [agent](https://github.com/jwdeitch/SystemBroAgent))
+##### Your server bro watches your servers back and lets you know what's going on
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/lumen-framework/v/unstable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+Each agent reports statistics every minute to this application; these stats include server resource usage and access log entries. The machine name distinguishes individual machines. Each result is stored in a mongoDB collection, though beforehand each access log line is parsed for location and paltform information. The bandwidth usage is recorded as bytes sent over the network interface in TX(outbound) and RX(inbound), though these values can spontiously zero. To remidy this, we can add the local maxmimums between any arbitrary time interval.
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+![bandwidth](https://s3-us-west-2.amazonaws.com/8201393personal/s/rvbv5.png)
 
-## Official Documentation
+### Technologies
+- [Vuejs](http://vuejs.org/)
+- [jQuery](https://jquery.com/)
+- [Lumen](https://lumen.laravel.com/)
+- [Chartjs](http://www.chartjs.org/)
+- [Semantic-UI](http://semantic-ui.com/)
+- [TimeAgo](http://timeago.yarp.com/)
+- MongoDB
+- PHP 5.6.11
+- Apache 2.4.12
+- Ubuntu 14.04
 
-Documentation for the framework can be found on the [Lumen website](http://lumen.laravel.com/docs).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
-
-
-logging
-
-        $file = fopen(storage_path(). '/logs/lumen.log','w');
-        fwrite($file,print_r($request,1));
-        fclose($file);
+#### TODO
+- [ ] Refactor backend mess
+- [ ] Adaptive log parsing (nginx/lighttpd etc...)
+- [ ] Convert agent to Go
+- [ ] Better multiserver handeing
