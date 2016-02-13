@@ -30,3 +30,7 @@ One more thing to note is that this app can circumvent addblockers (Google Analy
 - [ ] Adaptive log parsing (nginx/lighttpd etc...)
 - [ ] Convert agent to Go
 - [ ] Better multiserver handling
+
+
+#### License
+do whatever you want 2016
