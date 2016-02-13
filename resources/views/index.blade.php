@@ -5,6 +5,7 @@
     <title>SystemBro</title>
     <script src="/js/jquery-2.2.0.min.js"></script>
     <script src="/js/Chart.min.js"></script>
+    <script src="/js/jquery.timeago.js"></script>
     <script src="/js/vue.js"></script>
     <script src="/js/js.js"></script>
     <script src="/dist/semantic.min.js"></script>
@@ -206,12 +207,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-
     </div>
-
 </div>
 
 </div>

@@ -219,12 +219,12 @@ class Stats
             unset($stat['_id']);
             foreach ($stat as $key => &$itemInStat) {
                 if ($key == 'memory') {
-                    $itemInStat['memPercent'] = ceil((($itemInStat['total'] - $itemInStat['free']) / $itemInStat['total']) * 100) . '%';
+                    $itemInStat['memPercent'] = ceil((($itemInStat['total'] - $itemInStat['free']) / $itemInStat['total']) * 100);
                     unset($itemInStat['free'],$itemInStat['total']);
                 }
             }
             $stat['memory'] = array_pop($stat['memory']);
-            $stat['cpu'] = array_pop($stat['cpu']) . '%';
+            $stat['cpu'] = (int)array_pop($stat['cpu']);
         }
 
         return array_values($stats);
