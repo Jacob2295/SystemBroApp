@@ -1,28 +1,28 @@
-# Lumen PHP Framework
-
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/lumen-framework/v/unstable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
-
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
-
-## Official Documentation
-
-Documentation for the framework can be found on the [Lumen website](http://lumen.laravel.com/docs).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+# SystemBro
+##### Your server bro watches your servers back and lets you know what's going on (see [agent](https://github.com/jwdeitch/SystemBroAgent))
 
 
-logging
+![App](https://s3-us-west-2.amazonaws.com/8201393personal/s/SystemBroHQ1.jpg)
 
-        $file = fopen(storage_path(). '/logs/lumen.log','w');
-        fwrite($file,print_r($request,1));
-        fclose($file);
+
+Each agent reports statistics every minute to this application; these stats include server resource usage and access log entries. The machine name distinguishes individual machines. Each result is stored in a mongoDB collection, though beforehand each access log line is parsed for location and platform information. The bandwidth usage is recorded as bytes sent over the network interface in TX(outbound) and RX(inbound), though these values can spontaneously zero. To remedy this, we can add the local maximums between any arbitrary time interval.
+
+![bandwidth](https://s3-us-west-2.amazonaws.com/8201393personal/s/rvbv5.png)
+
+### Technologies
+- [Vuejs](http://vuejs.org/)
+- [jQuery](https://jquery.com/)
+- [Lumen](https://lumen.laravel.com/)
+- [Chartjs](http://www.chartjs.org/)
+- [Semantic-UI](http://semantic-ui.com/)
+- [TimeAgo](http://timeago.yarp.com/)
+- MongoDB
+- PHP 5.6.11
+- Apache 2.4.12
+- Ubuntu 14.04
+
+#### TODO
+- [ ] Refactor backend
+- [ ] Adaptive log parsing (nginx/lighttpd etc...)
+- [ ] Convert agent to Go
+- [ ] Better multiserver handling
