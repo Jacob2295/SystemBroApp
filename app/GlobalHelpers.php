@@ -25,8 +25,7 @@ class GlobalHelpers
 
 
     /**
-     * First of all, thanks to this guy on stack overflow: http://stackoverflow.com/a/4248922
-     * The idea here is to assume a natural
+     * The idea here is to count the local maximums
      *
      * @param array $dataY
      * @param int   $res
@@ -35,10 +34,17 @@ class GlobalHelpers
     {
         $maxima = [];
 
-        for ($i = 0; $i < count($dataY); $i += $radius) {
-            $maxima[] = max(array_slice($dataY, $i, $radius));
+        for ($i = 0; $i < count($dataY); $i += 1) {
+            if (isset($dataY[$i + 1])) {
+                if ($dataY[$i] > $dataY[$i + 1]) {
+                    $maxima[] = $dataY[$i];
+                }
+            } else {
+                $maxima[] = $dataY[$i];
+            }
+
         }
 
-        return $maxima;
+        return array_sum($maxima);
     }
 }

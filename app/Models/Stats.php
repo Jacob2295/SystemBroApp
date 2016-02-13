@@ -87,19 +87,13 @@ class Stats
     {
         foreach ($this->returnMostRecentRecords() as $individualServerRecord) {
 
-            $previousRecords = $this->getRecordFromNDaysAgo(['-1 day', '-1 month', '-1 week'], $individualServerRecord['_id']);
+            foreach (['-1 month', '-1 week', '-1 day'] as $timeSpan) {
+                $bandwidthConsumed[$timeSpan] = GlobalHelpers::local_min($this->getRecordsFromNTillNow('-1 month', $individualServerRecord['_id'], ['bandwidth.out', 'bandwidth.in']));
 
-            dd(GlobalHelpers::local_min($this->getRecordsFromNTillNow('-1 month', $individualServerRecord['_id'], ['bandwidth.out' => 1])));
-
-            foreach ($previousRecords as $timeSpan => $previousRecord) {
-                $bandwidthTotal[$timeSpan] =
-                    ($individualServerRecord['bandwidthOut'] - $previousRecord['bandwidth']['out']) +
-                    ($individualServerRecord['bandwidthIn'] - $previousRecord['bandwidth']['in']);
             }
         }
 
-
-        return $bandwidthTotal;
+        return $bandwidthConsumed;
     }
 
     /**
@@ -143,9 +137,20 @@ class Stats
         foreach ($items as &$item) {
             unset($item['_id']);
 
-            array_walk_recursive($item, function ($leaf) use (&$item) {
-                $item = (int)$leaf;
+            $in = 0;
+            $out = 0;
+
+            array_walk_recursive($item, function ($leaf, $node) use (&$item, &$in, &$out) {
+                if ($node == 'in') {
+                    $in = $leaf;
+                }
+
+                if ($node == 'out') {
+                    $out = $leaf;
+                }
+
             });
+            $item = (int)$in + (int)$out;
         }
 
         return array_values($items);
