@@ -50,7 +50,7 @@ hr {
     float: right
 }
 
-.mainContent {
+.stats {
     display: flex;
     justify-content: center;
 }
