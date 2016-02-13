@@ -199,16 +199,29 @@ class Stats
 
     public function historicalMemAndCpu($aggregate)
     {
-        $items = iterator_to_array($this->mongoCollection->find([
+        $stats = iterator_to_array($this->mongoCollection->find([
             'fromServer.hostname' => $aggregate['_id']
         ], [
-            'memory.free', 'memory.total', 'cpu.1minAverage'
+            'memory.free', 'memory.total', 'cpu.1minAverage', 'createdAt'
         ])->sort(
             [
                 'createdAt' => -1
             ]
         )->limit(10));
 
+        foreach ($stats as &$stat) {
+            unset($stat['_id']);
+            foreach ($stat as $key => &$itemInStat) {
+                if ($key == 'memory') {
+                    $itemInStat['memPercent'] = ceil((($itemInStat['total'] - $itemInStat['free']) / $itemInStat['total']) * 100) . '%';
+                    unset($itemInStat['free'],$itemInStat['total']);
+                }
+            }
+            $stat['memory'] = array_pop($stat['memory']);
+            $stat['cpu'] = array_pop($stat['cpu']);
+        }
+
+        return array_values($stats);
     }
 
 
