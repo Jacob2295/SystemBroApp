@@ -19,6 +19,8 @@ class Stats
 {
 
     /**
+     * Gives us the mongoCursor
+     *
      * Initialize mongoClient
      */
     public function __construct()
@@ -27,7 +29,11 @@ class Stats
     }
 
     /**
-     * @return array
+     * Aggregate pipeline to collect a flattened array
+     * of the most recent servers. Intended for DynamoDB
+     * hence the need for a flattening
+     *
+     * @return array A flat array of recent records
      */
     private function returnMostRecentRecords()
     {
@@ -60,6 +66,10 @@ class Stats
     }
 
     /**
+     * TODO: Needs serious refactor
+     * Collects the whole data package for
+     * the most recent aggregates
+     *
      * @param $aggregates
      * @return mixed
      */
@@ -102,17 +112,10 @@ class Stats
     }
 
     /**
-     * @param array $query
-     * @param array $sort
+     * Inserts records into the
+     * stats collection, and append
+     * a createdAt timestamp
      *
-     * @return array
-     */
-    private function findOne(array $query, array $sort = [])
-    {
-        return iterator_to_array($this->mongoCollection->find($query)->limit(1)->sort($sort));
-    }
-
-    /**
      * @param array $stats
      */
     public function insert(array $stats)
@@ -122,7 +125,10 @@ class Stats
     }
 
     /**
-     * @return array
+     * Denotes the amount of bandwidth consumed
+     * for different intervals
+     *
+     * @return array Bandwidth consumed
      */
     public function retrieveTransfer($individualServerRecord)
     {
@@ -138,7 +144,9 @@ class Stats
     }
 
     /**
-     * @return array
+     * Grabs the basic server stats
+     *
+     * @return array Basic server statistics
      */
     public function grabStats()
     {
@@ -146,6 +154,9 @@ class Stats
     }
 
     /**
+     * Returns a single records from $daysago
+     *
+     * @see getRecordsFromNTillNow
      * @param array $daysAgo
      * @param       $hostname
      *
@@ -167,8 +178,11 @@ class Stats
 
 
     /**
-     * @param       $daysAgo
-     * @param       $hostname
+     * Collects records spanning an interval between
+     * now and $daysago
+     *
+     * @param       $daysAgo string -1 month, -1 day, etc..
+     * @param       $hostname array denotes the senders server
      * @param array $projection
      * @return array
      */
@@ -203,6 +217,13 @@ class Stats
     }
 
 
+    /**
+     * Collects the previously collected CPU
+     * and RAM information for charting
+     *
+     * @param $aggregate
+     * @return array [ CPU => {val}, MEM => {VAL} ]
+     */
     public function historicalMemAndCpu($aggregate)
     {
         $stats = iterator_to_array($this->mongoCollection->find([

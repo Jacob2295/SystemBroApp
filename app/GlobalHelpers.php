@@ -6,6 +6,8 @@ class GlobalHelpers
 {
 
     /**
+     * Formats bytes to human readable size
+     *
      * @param     $size
      * @param int $precision
      *
@@ -25,10 +27,12 @@ class GlobalHelpers
 
 
     /**
-     * The idea here is to count the local maximums
+     * The idea here is to count the local maximums in order
+     * to account for spontaneous loss of TX and RX
      *
      * @param array $dataY
-     * @param int   $res
+     * @param int   $radius
+     * @return array
      */
     public static function local_min(array $dataY, $radius = 2)
     {
@@ -48,6 +52,12 @@ class GlobalHelpers
         return array_sum($maxima);
     }
 
+    /**
+     * @see formatBytes
+     *
+     * @param array $bytes
+     * @return array
+     */
     public static function arrFormatBytes(array $bytes)
     {
         $result = [];

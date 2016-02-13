@@ -13,6 +13,9 @@ class Analytics
 {
 
     /**
+     * Needs DI, but for time being, retrieves
+     * mongo Cursor
+     *
      * LoggingModel constructor.
      */
     public function __construct()
@@ -21,8 +24,11 @@ class Analytics
     }
 
     /**
-     * @param array $alogs
-     * @param       $fromServer
+     * Inserts the access log information in
+     * the database
+     *
+     * @param array $alogs Access Log lines
+     * @param       $fromServer array The sender of these access logs
      *
      * @throws \Kassner\LogParser\FormatException
      */
@@ -63,7 +69,10 @@ class Analytics
     }
 
     /**
-     * @return array
+     * Obtains the unique visitors of a given server
+     *
+     * @param $aggregate
+     * @return array Integer counts of given timespan
      */
     public function getUniqueVisits($aggregate)
     {
@@ -75,8 +84,10 @@ class Analytics
     }
 
     /**
+     * Obtains the total resource requests of a given server
+     *
      * @param $aggregate
-     * @return array
+     * @return array Integer counts of given timespan
      */
     public function getTotalRequestCount($aggregate)
     {
@@ -88,6 +99,9 @@ class Analytics
     }
 
     /**
+     * Retrieves the most recent visitors to the
+     * site, limited at 20
+     *
      * @return mixed
      */
     public function getRecentVisitors()
@@ -112,6 +126,11 @@ class Analytics
 
     }
 
+    /**
+     * Counts the HTTP response codes
+     *
+     * @return array Counts of each HTTP response code
+     */
     public function getHttpCodeCount()
     {
         return $this->mongoCollectionForAccess->aggregate([
@@ -123,8 +142,10 @@ class Analytics
     }
 
     /**
+     * Collects everything and puts it all together
+     *
      * @param $aggregate
-     * @return array
+     * @return array Aggregation information
      */
     public function aggregateAnalytics($aggregate)
     {
