@@ -21,10 +21,9 @@ Each agent reports statistics every minute to this application; these stats incl
 - PHP 5.6.11
 - Apache 2.4.12
 - Ubuntu 14.04
-- Auto refreshing web interface
 
 
-One more thing to note is that this app can circumvent addblockers (Google Analytics / Piwik etc.. can sometimes be blocked by the client). You can update the GeoLocation database by running ```php artisan maxmind:update``` from the projects home directory.
+This app can circumvent addblockers (Google Analytics / Piwik etc.. can sometimes be blocked by the client). You can update the GeoLocation database by running ```php artisan maxmind:update``` from the projects home directory. The web interface refreshes every minute automatically.
 
 #### TODO
 - [ ] Refactor backend
