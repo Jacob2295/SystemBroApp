@@ -16,6 +16,7 @@ Each agent reports statistics every minute to this application; these stats incl
 - [Chartjs](http://www.chartjs.org/)
 - [Semantic-UI](http://semantic-ui.com/)
 - [TimeAgo](http://timeago.yarp.com/)
+- [MaxMind](http://www.maxmind.com)
 - MongoDB
 - PHP 5.6.11
 - Apache 2.4.12
@@ -23,7 +24,7 @@ Each agent reports statistics every minute to this application; these stats incl
 - Auto refreshing web interface
 
 
-One more thing to note is that this app can circumvent addblockers (Google Analytics / Piwik etc.. can sometimes be blocked by the client). You can update the GeoLocation database buy running ```php artisan maxmind:update``` from the projects home directory.
+One more thing to note is that this app can circumvent addblockers (Google Analytics / Piwik etc.. can sometimes be blocked by the client). You can update the GeoLocation database by running ```php artisan maxmind:update``` from the projects home directory.
 
 #### TODO
 - [ ] Refactor backend
