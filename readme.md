@@ -23,7 +23,7 @@ Each agent reports statistics every minute to this application; these stats incl
 - Auto refreshing web interface
 
 
-One more thing to note is that this app can circumvent addblockers (Google Analytics / Piwik etc.. can sometimes be blocked by the client)
+One more thing to note is that this app can circumvent addblockers (Google Analytics / Piwik etc.. can sometimes be blocked by the client). You can update the GeoLocation database buy running ```php artisan maxmind:update``` from the projects home directory.
 
 #### TODO
 - [ ] Refactor backend
@@ -34,3 +34,6 @@ One more thing to note is that this app can circumvent addblockers (Google Analy
 
 #### License
 do whatever you want 2016
+
+This product includes GeoLite2 data created by MaxMind, available from
+[http://www.maxmind.com](http://www.maxmind.com).
