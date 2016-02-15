@@ -32,7 +32,15 @@
                     <div class="field">
                         <input type="text" name="hostname" class='hostnameField' placeholder="server hostname">
                     </div>
-                        <center><button class="ui blue center basic button submitSite" type="submit">Submit</button></center>
+                    <center>
+                        <button class="ui blue center basic button submitSite" type="submit">Submit</button>
+                        <div class="ui middle aligned divided list">
+                            <div class="item" v-for="allowed in addedServers">
+                                <div class="content">
+                                    @{{allowed}}
+                                </div>
+                            </div>
+                    </center>
                 </form>
             </div>
             <select name="skills" class="ui search dropdown">

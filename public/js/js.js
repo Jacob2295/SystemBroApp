@@ -8,6 +8,7 @@ $(document).ready(function () {
             collectionItem: [],
             collectionItems: [],
             allowedServers: [],
+            addedServers: [],
             collectionInView: 0
         },
         watch: {
@@ -111,6 +112,7 @@ $(document).ready(function () {
 
                     vue.$set('allowedServers', allowedServers);
                     vue.$set('collectionItem', data.servers[vue.collectionInView]);
+                    vue.$set('addedServers', data.allowedServers);
                     vue.$set('collectionItems', data.servers);
                 });
             }
@@ -120,6 +122,7 @@ $(document).ready(function () {
     $('.submitSite').click(function(e) {
         e.preventDefault();
         that = this;
+        vue.addedServers.push($('.hostnameField').val());
         $.post('/addServer',{"hostname":$('.hostnameField').val(),"_token":$('.csrfToken').val()} ,function() {
             $(that).text('Processing...');
         }).done(function() {
