@@ -104,9 +104,13 @@ class Analytics
      *
      * @return mixed
      */
-    public function getRecentVisitors()
+    public function getRecentVisitors($aggregate)
     {
         $visitors = $this->mongoCollectionForAccess->aggregate([
+            '$match' => [
+                'fromServer.hostname' => $aggregate['_id']
+            ]
+        ],[
             '$group' => [
                 '_id'           => '$host',
                 'time'          => ['$last' => '$stamp'],
@@ -131,9 +135,13 @@ class Analytics
      *
      * @return array Counts of each HTTP response code
      */
-    public function getHttpCodeCount()
+    public function getHttpCodeCount($aggregate)
     {
         return $this->mongoCollectionForAccess->aggregate([
+            '$match' => [
+                'fromServer.hostname' => $aggregate['_id']
+            ]
+        ],[
             '$group' => [
                 '_id'   => '$status',
                 'count' => ['$sum' => 1]
@@ -152,8 +160,8 @@ class Analytics
         return [
             'uniqueVisits'          => $this->getUniqueVisits($aggregate),
             'totalRequestCount'     => $this->getTotalRequestCount($aggregate),
-            'recentVisitors'        => $this->getRecentVisitors(),
-            'HttpResponseCodeCount' => $this->getHttpCodeCount(),
+            'recentVisitors'        => $this->getRecentVisitors($aggregate),
+            'HttpResponseCodeCount' => $this->getHttpCodeCount($aggregate),
         ];
     }
 
