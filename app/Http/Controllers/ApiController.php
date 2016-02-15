@@ -62,6 +62,17 @@ class ApiController extends Controller
     {
         parse_str( $request->getContent(), $payload );
 
+        if ($this->mongoCollection->selectCollection('allowedServers')->count() == 0) {
+            $this->mongoCollection->selectCollection('allowedServers')->insert([
+                'type' => 'allowedServerList',
+                'allowedServers' => [
+                    $payload['hostname']
+                ]
+            ]);
+        } elseif (!in_array($payload['hostname'],$this->mongoCollection->selectCollection('allowedServers')->findOne(['type' => 'allowedServerList'])['allowedServers'])) {
+            return 'permission denied';
+        }
+
         $payload['fromServer'] = [
             'hostname' => $payload['hostname'],
             'ip'       => $request->ip()

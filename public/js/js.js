@@ -84,6 +84,8 @@ $(document).ready(function () {
                     ]
                 };
                 var myLineChart = new Chart(ctx).Line(data);
+
+                $('.ui.dropdown').dropdown();
             }
         },
         methods: {

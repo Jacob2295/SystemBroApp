@@ -30,7 +30,7 @@
             )
 
             <select name="skills" class="ui search dropdown">
-                <option value="collectionItem.ip">Skills</option>
+                <option v-for="allowedServer in allowedServers" value="@{{collectionItem._id}}">@{{collectionItem._id}}</option>
             </select>
 
             <div class="rightTitle">
