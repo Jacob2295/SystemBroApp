@@ -103,7 +103,13 @@ $(document).ready(function () {
         methods: {
             getData: function () {
                 $.get('/retrieve').done(function (data) {
-                    vue.$set('allowedServers', data.allowedServers);
+
+                    var allowedServers = [];
+                    data.servers.forEach(function(server){
+                        allowedServers.push(server._id);
+                    });
+
+                    vue.$set('allowedServers', allowedServers);
                     vue.$set('collectionItem', data.servers[vue.collectionInView]);
                     vue.$set('collectionItems', data.servers);
                 });
