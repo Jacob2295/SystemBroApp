@@ -7,7 +7,8 @@ $(document).ready(function () {
         data: {
             collectionItem: [],
             collectionItems: [],
-            allowedServers: []
+            allowedServers: [],
+            collectionInView: 0
         },
         watch: {
             'collectionItem': function (collectionItem) {
@@ -92,6 +93,7 @@ $(document).ready(function () {
                         vue.collectionItems.forEach(function (server, index) {
                             if (server._id == val) {
                                 vue.$set('collectionItem', vue.collectionItems[index]);
+                                vue.$set('collectionInView', index);
                             }
                         });
                     }
@@ -102,7 +104,7 @@ $(document).ready(function () {
             getData: function () {
                 $.get('/retrieve').done(function (data) {
                     vue.$set('allowedServers', data.allowedServers);
-                    vue.$set('collectionItem', data.servers[0]);
+                    vue.$set('collectionItem', data.servers[vue.collectionInView]);
                     vue.$set('collectionItems', data.servers);
                 });
             }
