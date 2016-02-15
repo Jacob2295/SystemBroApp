@@ -6,6 +6,7 @@ $(document).ready(function () {
         el: '.container',
         data: {
             collectionItem: [],
+            collectionItems: [],
             allowedServers: []
         },
         watch: {
@@ -85,18 +86,24 @@ $(document).ready(function () {
                 };
                 var myLineChart = new Chart(ctx).Line(data);
 
-                $('.ui.dropdown').dropdown();
+                $('.ui.dropdown').dropdown({
+                    onChange: function (val) {
+                        vue.collectionItems.forEach(function (server, index) {
+                            if (server._id == val) {
+                                vue.$set('collectionItem', vue.collectionItems[index]);
+                            }
+                        });
+                    }
+                });
             }
         },
         methods: {
             getData: function () {
                 $.get('/retrieve').done(function (data) {
-                    vue.$set('collectionItem', vue.getSiteIndex(data.servers));
                     vue.$set('allowedServers', data.allowedServers);
+                    vue.$set('collectionItem', data.servers[0]);
+                    vue.$set('collectionItems', data.servers);
                 });
-            },
-            getSiteIndex: function (servers) {
-                return servers[0];
             }
         }
     });
