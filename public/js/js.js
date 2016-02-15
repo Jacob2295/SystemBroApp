@@ -13,6 +13,7 @@ $(document).ready(function () {
             'collectionItem': function (collectionItem) {
                 var ctx = $("#cpuAndMem").get(0).getContext("2d");
                 Chart.defaults.global.responsive = true;
+                Chart.defaults.global.scaleFontSize = 0;
 
                 var labels = [];
                 var cpuData = [];
