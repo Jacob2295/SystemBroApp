@@ -24,6 +24,9 @@
         </div>
 
         <div class="main collectionItem">
+            <button class="ui blue button">
+                <i class="plus icon"></i> Add
+            </button>
             <select name="skills" class="ui search dropdown">
                 <option v-for="allowedServer in allowedServers" value="@{{allowedServer}}">@{{allowedServer}}</option>
             </select>
