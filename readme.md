@@ -27,7 +27,7 @@ This app can circumvent adblockers (Google Analytics / Piwik etc.. can sometimes
 
 #### TODO
 - [ ] Refactor backend
-- [ ] Adaptive log parsing (nginx/lighttpd etc...)
+- [x] detect system (agent)
 - [ ] Convert agent to Go
 - [ ] Better multiserver handling
 
