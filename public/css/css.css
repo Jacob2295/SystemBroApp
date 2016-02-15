@@ -59,7 +59,8 @@ hr {
 }
 
 .rightTitle {
-    float: right
+    float: right;
+    margin-top: 8px;
 }
 
 .stats {
