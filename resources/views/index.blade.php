@@ -24,14 +24,12 @@
         </div>
 
         <div class="main collectionItem">
-            <div class="title">@{{collectionItem._id}}</div>
-            (
-            <div class="faint">@{{collectionItem.ip}}</div>
-            )
-
             <select name="skills" class="ui search dropdown">
                 <option v-for="allowedServer in allowedServers" value="@{{allowedServer}}">@{{allowedServer}}</option>
             </select>
+              (
+            <div class="faint">@{{collectionItem.ip}} </div>
+            )
 
             <div class="rightTitle">
                 up @{{collectionItem.uptime}}
