@@ -32,7 +32,7 @@ class Analytics
      *
      * @throws \Kassner\LogParser\FormatException
      */
-    public function insertAccessLogging(array $alogs, $fromServer)
+    public function insertAccessLogging(array $alogs, $fromServer, $parseString)
     {
 
         if (!(count($alogs) > 0)) {
@@ -40,7 +40,7 @@ class Analytics
         }
 
         $parser = new \Kassner\LogParser\LogParser();
-        $parser->setFormat('%h %l %u %t "%r" %>s %O "%{Referer}i" \"%{User-Agent}i"');
+        $parser->setFormat($parseString);
         $toBeInserted = [];
         foreach ($alogs as $line) {
             $userSpec = $parser->parse($line);
