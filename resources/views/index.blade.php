@@ -23,7 +23,7 @@
             qdqwdqwdqwd
         </div>
 
-        <div class="main collectionItem" v-for="collectionItem in collectionItems">
+        <div class="main collectionItem">
             <div class="title">@{{collectionItem._id}}</div>
             (
             <div class="faint">@{{collectionItem.ip}}</div>

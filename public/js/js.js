@@ -5,11 +5,11 @@ $(document).ready(function () {
     var vue = new Vue({
         el: '.container',
         data: {
-            collectionItems: [],
+            collectionItem: [],
             allowedServers: []
         },
         watch: {
-            'collectionItems': function (collectionItems) {
+            'collectionItem': function (collectionItem) {
                 var ctx = $("#cpuAndMem").get(0).getContext("2d");
                 Chart.defaults.global.responsive = true;
 
@@ -18,46 +18,43 @@ $(document).ready(function () {
                 var memData = [];
 
                 var httpResponseCodes = [];
-                var httpResponseCodeLabels = [];
 
-                collectionItems.forEach(function (collectionItem) {
-                    collectionItem.historicalRecords.forEach(function (historicalRecord) {
-                        labels.push(jQuery.timeago(historicalRecord.createdAt * 1000));
-                        cpuData.push(historicalRecord.cpu);
-                        memData.push(historicalRecord.memory);
-                    });
-
-                    collectionItem.analytics.HttpResponseCodeCount.forEach(function (responseCount) {
-
-                        switch (responseCount._id) {
-                            case '500':
-                                color = "#F7464A";
-                                highlight = "#FF5A5E";
-                                break;
-                            case '200':
-                                color = '#dffdcf';
-                                highlight = '#b6ceab';
-                                break;
-                            case '400':
-                                color = '#AAB3AB';
-                                highlight = '#646a64';
-                                break;
-                            default:
-                                color = '#FBF2DF';
-                                highlight = '#F8ECC2';
-                        }
-
-                        httpResponseCodes.push({
-                            value: responseCount.count,
-                            color: color,
-                            highlight: highlight,
-                            label: responseCount._id
-                        });
-                    });
-
+                collectionItem.historicalRecords.forEach(function (historicalRecord) {
+                    labels.push(jQuery.timeago(historicalRecord.createdAt * 1000));
+                    cpuData.push(historicalRecord.cpu);
+                    memData.push(historicalRecord.memory);
                 });
+
+                collectionItem.analytics.HttpResponseCodeCount.forEach(function (responseCount) {
+
+                    switch (responseCount._id) {
+                        case '500':
+                            color = "#F7464A";
+                            highlight = "#FF5A5E";
+                            break;
+                        case '200':
+                            color = '#dffdcf';
+                            highlight = '#b6ceab';
+                            break;
+                        case '400':
+                            color = '#AAB3AB';
+                            highlight = '#646a64';
+                            break;
+                        default:
+                            color = '#FBF2DF';
+                            highlight = '#F8ECC2';
+                    }
+
+                    httpResponseCodes.push({
+                        value: responseCount.count,
+                        color: color,
+                        highlight: highlight,
+                        label: responseCount._id
+                    });
+                });
+
                 var piCtx = $("#httpCodes").get(0).getContext("2d");
-                var myPieChart = new Chart(piCtx).Pie(httpResponseCodes,{tooltipTemplate: "<%= value %>"});
+                var myPieChart = new Chart(piCtx).Pie(httpResponseCodes, {tooltipTemplate: "<%= value %>"});
 
                 document.getElementById('js-legend').innerHTML = myPieChart.generateLegend();
 
@@ -92,14 +89,17 @@ $(document).ready(function () {
         methods: {
             getData: function () {
                 $.get('/retrieve').done(function (data) {
-                    vue.$set('collectionItems', data.servers);
+                    vue.$set('collectionItem', vue.getSiteIndex(data.servers));
                     vue.$set('allowedServers', data.allowedServers);
                 });
+            },
+            getSiteIndex: function (servers) {
+                return servers[0];
             }
         }
     });
     vue.getData();
-    window.setInterval(function(){
+    window.setInterval(function () {
         vue.getData();
         console.log('Refreshed data');
     }, 30000);
