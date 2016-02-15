@@ -71,17 +71,21 @@ class ApiController extends Controller
             $this->loggingModel->insertAccessLogging( $payload['accessLog'], $payload['fromServer'], $payload['parseString'] );
         }
 
-//        if (isset($payload['errorLog'])) {
-//            $this->loggingModel->insertErrorLogging( $payload['errorLog'], $payload['fromServer'] );
-//        }
-
-
         unset( $payload['accessLog'], $payload['errorLog'] );
 
         $payload['serverCollectedFromIP'] = $request->ip();
         $this->stats->insert( $payload );
 
         return 'inserted';
+    }
+
+    public function addServer(Request $request)
+    {
+        $this->mongoCollection->selectCollection('allowedServers')->update(['type' => 'allowedServeList'], [
+            '$push' => [
+                'allowedServers' => $request->hostname
+            ]
+        ], ['upsert'=>1]);
     }
 
 }

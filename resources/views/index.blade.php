@@ -9,6 +9,8 @@
     <script src="/js/vue.js"></script>
     <script src="/js/js.js"></script>
     <script src="/dist/semantic.min.js"></script>
+
+
     <link href="/dist/semantic.min.css" rel="stylesheet">
     <link href="/css/css.css" rel="stylesheet">
 
@@ -26,6 +28,11 @@
             (
             <div class="faint">@{{collectionItem.ip}}</div>
             )
+
+            <select name="skills" class="ui search dropdown">
+                <option value="collectionItem.ip">Skills</option>
+            </select>
+
             <div class="rightTitle">
                 up @{{collectionItem.uptime}}
             </div>

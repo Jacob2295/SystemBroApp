@@ -5,7 +5,8 @@ $(document).ready(function () {
     var vue = new Vue({
         el: '.container',
         data: {
-            collectionItems: []
+            collectionItems: [],
+            allowedServers: []
         },
         watch: {
             'collectionItems': function (collectionItems) {
@@ -91,7 +92,8 @@ $(document).ready(function () {
         methods: {
             getData: function () {
                 $.get('/retrieve').done(function (data) {
-                    vue.$set('collectionItems', data)
+                    vue.$set('collectionItems', data.servers);
+                    vue.$set('allowedServers', data.allowedServers);
                 });
             }
         }
