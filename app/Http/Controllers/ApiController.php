@@ -92,7 +92,7 @@ class ApiController extends Controller
 
     public function addServer(Request $request)
     {
-        $this->mongoCollection->selectCollection('allowedServers')->update(['type' => 'allowedServeList'], [
+        return $this->mongoCollection->selectCollection('allowedServers')->update(['type' => 'allowedServeList'], [
             '$push' => [
                 'allowedServers' => $request->hostname
             ]

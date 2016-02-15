@@ -116,10 +116,34 @@ $(document).ready(function () {
             }
         }
     });
+
+    $('.submitSite').click(function(e) {
+        e.preventDefault();
+        that = this;
+        $.post('/addServer',{"hostname":$('.hostnameField').val(),"_token":$('.csrfToken').val()} ,function() {
+            $(that).text('Processing...');
+        }).done(function() {
+            $(that).text('Added!');
+            $(that).addClass('green');
+        }).fail(function() {
+            $(that).text('Error!');
+            $(that).addClass('red');
+        });
+    });
+
     vue.getData();
     window.setInterval(function () {
         vue.getData();
         console.log('Refreshed data');
     }, 30000);
-
+    $('.addSite').popup({
+        hoverable: true,
+        on: 'click',
+        duration: 50,
+        position: 'bottom center',
+        delay: {
+            show: 0,
+            hide: 0
+        }
+    });
 });

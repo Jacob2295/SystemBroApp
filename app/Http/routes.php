@@ -16,5 +16,5 @@ use App\Http\Controllers\ApiController;
 $app->post('/collect', 'ApiController@collect');
 $app->get('/retrieve', 'ApiController@RetrieveCollectedData');
 $app->get('/getServers', 'ApiController@getServers');
-$app->get('/addServer', 'ApiController@addServer');
+$app->post('/addServer', 'ApiController@addServer');
 $app->get('/', 'ApiController@index');

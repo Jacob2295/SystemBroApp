@@ -24,14 +24,22 @@
         </div>
 
         <div class="main collectionItem">
-            <button class="ui blue button">
+            <button class="ui blue button addSite">
                 <i class="plus icon"></i> Add
             </button>
+            <div class="ui flowing popup top left transition wide hidden">
+                <form class="ui form">
+                    <div class="field">
+                        <input type="text" name="hostname" class='hostnameField' placeholder="server hostname">
+                    </div>
+                        <center><button class="ui blue center basic button submitSite" type="submit">Submit</button></center>
+                </form>
+            </div>
             <select name="skills" class="ui search dropdown">
                 <option v-for="allowedServer in allowedServers" value="@{{allowedServer}}">@{{allowedServer}}</option>
             </select>
-              (
-            <div class="faint">@{{collectionItem.ip}} </div>
+            (
+            <div class="faint">@{{collectionItem.ip}}</div>
             )
 
             <div class="rightTitle">
