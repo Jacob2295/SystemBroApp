@@ -132,6 +132,7 @@ $(document).ready(function () {
             $(that).text('Error!');
             $(that).addClass('red');
         });
+        $('.hostnameField').val('');
     });
 
     vue.getData();
