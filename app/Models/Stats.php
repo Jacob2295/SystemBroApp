@@ -75,7 +75,8 @@ class Stats
      */
     public function formatRecent($aggregates)
     {
-        foreach ($aggregates as &$aggregate) {
+        $aggregates['allowedServers'] = (new AllowedServers())->getServers();
+        foreach ($aggregates['servers'] as &$aggregate) {
 
             $aggregate['analytics'] = (new Analytics())->aggregateAnalytics($aggregate);
 
@@ -134,7 +135,6 @@ class Stats
     {
 
         $bandwidthConsumed = [];
-
         foreach (['month' => '-1 month', 'week' => '-1 week', 'day' => '-1 day'] as $key => $timeSpan) {
             $bandwidthConsumed[$key] = GlobalHelpers::formatBytes(GlobalHelpers::local_min($this->getRecordsFromNTillNow($timeSpan, $individualServerRecord['_id'], ['bandwidth.out', 'bandwidth.in'])));
 
@@ -150,7 +150,7 @@ class Stats
      */
     public function grabStats()
     {
-        return $this->formatRecent($this->returnMostRecentRecords());
+        return $this->formatRecent(['servers' => $this->returnMostRecentRecords()]);
     }
 
     /**

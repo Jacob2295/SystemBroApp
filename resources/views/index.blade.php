@@ -9,6 +9,8 @@
     <script src="/js/vue.js"></script>
     <script src="/js/js.js"></script>
     <script src="/dist/semantic.min.js"></script>
+
+
     <link href="/dist/semantic.min.css" rel="stylesheet">
     <link href="/css/css.css" rel="stylesheet">
 
@@ -21,11 +23,14 @@
             qdqwdqwdqwd
         </div>
 
-        <div class="main collectionItem" v-for="collectionItem in collectionItems">
-            <div class="title">@{{collectionItem._id}}</div>
-            (
-            <div class="faint">@{{collectionItem.ip}}</div>
+        <div class="main collectionItem">
+            <select name="skills" class="ui search dropdown">
+                <option v-for="allowedServer in allowedServers" value="@{{allowedServer}}">@{{allowedServer}}</option>
+            </select>
+              (
+            <div class="faint">@{{collectionItem.ip}} </div>
             )
+
             <div class="rightTitle">
                 up @{{collectionItem.uptime}}
             </div>
