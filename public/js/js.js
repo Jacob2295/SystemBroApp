@@ -66,7 +66,7 @@ $(document).ready(function () {
                     labels: labels.reverse(),
                     datasets: [
                         {
-                            label: "My First dataset",
+                            label: "CPU",
                             fillColor: "rgba(220,220,220,0.2)",
                             strokeColor: "rgba(220,220,220,1)",
                             pointColor: "rgba(220,220,220,1)",
@@ -76,7 +76,7 @@ $(document).ready(function () {
                             data: cpuData.reverse()
                         },
                         {
-                            label: "My Second dataset",
+                            label: "RAM",
                             fillColor: "rgba(151,187,205,0.2)",
                             strokeColor: "rgba(151,187,205,1)",
                             pointColor: "rgba(151,187,205,1)",
@@ -87,7 +87,7 @@ $(document).ready(function () {
                         }
                     ]
                 };
-                var myLineChart = new Chart(ctx).Line(data);
+                var myLineChart = new Chart(ctx).Line(data,{multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"});
 
                 $('.ui.dropdown').dropdown({
                     onChange: function (val) {

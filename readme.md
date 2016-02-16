@@ -35,10 +35,11 @@ You can then select from different servers you have collected from:
 ![selectServer](https://s3-us-west-2.amazonaws.com/8201393personal/s/fbjnz.jpg)
 
 #### TODO
-- [ ] Refactor backend
 - [x] detect system (agent)
-- [ ] Convert agent to Go
 - [x] Better multiserver handling
+- [ ] Dockerize
+- [ ] Convert agent to Go
+- [ ] Refactor backend
 
 
 #### License
