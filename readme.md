@@ -33,9 +33,14 @@ You can then select from different servers you have collected from:
 
 ![selectServer](https://s3-us-west-2.amazonaws.com/8201393personal/s/fbjnz.jpg)
 
+
+**Note: I strongly recommend installing this application behind an implementation of HTTP auth**
+
 #### TODO
 - [x] detect system (agent)
 - [x] Better multiserver handling
+- [ ] Getting started / after install page
+- [ ] Password auth to access app
 - [ ] Dockerize
 - [ ] Convert agent to Go
 - [ ] Refactor backend
