@@ -5,7 +5,7 @@
 ![App](https://s3-us-west-2.amazonaws.com/8201393personal/s/lkuw7.jpg)
 
 
-Each agent reports statistics every minute to this application; these stats include server resource usage and access log entries. The machine name distinguishes individual machines. Each result is stored in a mongoDB collection, though beforehand each access log line is parsed for location and platform information. 
+Each agent reports statistics every minute to this application; these stats include server resource usage and access log entries. The machine name distinguishes individual machines (Reason being, if you're on an EC2 instance for example, then everytime you start/stop that instance, you may loose the associated IP, hence the hostname as the servers identifier - it prevents you from constantly having to update the IP whitlist). Each result is stored in a mongoDB collection, though beforehand each access log line is parsed for location and platform information. 
 
 **Note: The agent will clear the webserver's access.log file**
 
