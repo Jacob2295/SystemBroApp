@@ -25,11 +25,20 @@ Each agent reports statistics every minute to this application; these stats incl
 
 This app can circumvent adblockers (Google Analytics / Piwik etc.. can sometimes be blocked by the client). You can update the GeoLocation database by running ```php artisan maxmind:update``` from the projects home directory. The web interface refreshes every minute automatically.
 
+
+You can add servers that the app should accept queries for:
+![addServer](https://s3-us-west-2.amazonaws.com/8201393personal/s/zqhly.jpg)
+
+
+You can then select from different servers you have collected from:
+
+![selectServer](https://s3-us-west-2.amazonaws.com/8201393personal/s/fbjnz.jpg)
+
 #### TODO
 - [ ] Refactor backend
 - [x] detect system (agent)
 - [ ] Convert agent to Go
-- [ ] Better multiserver handling
+- [x] Better multiserver handling
 
 
 #### License
