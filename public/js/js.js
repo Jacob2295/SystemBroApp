@@ -87,7 +87,7 @@ $(document).ready(function () {
                         }
                     ]
                 };
-                var myLineChart = new Chart(ctx).Line(data,{multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"});
+                var myLineChart = new Chart(ctx).Line(data,{multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>%"});
 
                 $('.ui.dropdown').dropdown({
                     onChange: function (val) {
