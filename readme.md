@@ -7,7 +7,7 @@
 
 Each agent reports statistics every minute to this application; these stats include server resource usage and access log entries. The machine name distinguishes individual machines. Each result is stored in a mongoDB collection, though beforehand each access log line is parsed for location and platform information. 
 
-**Note: The agent will disable writting to the webserver's access.log file**
+**Note: The agent will clear the webserver's access.log file, and use it as a temporary log buffer**
 
 ### Technologies
 - [Vuejs](http://vuejs.org/)
