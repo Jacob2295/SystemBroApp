@@ -46,9 +46,6 @@ You can then select from different servers you have collected from:
 - [ ] Refactor backend
 
 
-#### License
-do whatever you want 2016
-
 This product includes GeoLite2 data created by MaxMind, available from
 [http://www.maxmind.com](http://www.maxmind.com).
 
@@ -64,3 +61,28 @@ The bandwidth usage is recorded as bytes sent over the network interface in TX(o
 Reason being, if you're on an EC2 instance for example, then everytime you start/stop that instance, you may loose the associated IP, hence the hostname as the servers identifier - it prevents you from constantly having to update the IP whitelist
 
 
+
+
+### License
+
+The MIT License (MIT)
+
+Copyright (c) <Taylor Otwell>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
