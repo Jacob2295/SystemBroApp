@@ -17,7 +17,7 @@
 </head>
 <body>
 <div class="ui container">
-    <div class="systemProfile">
+    <div class="systemProfile" v-if="collectionItems.length">
 
         <div class="sidebar">
             qdqwdqwdqwd
@@ -243,6 +243,32 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="mainContent" v-else>
+        <div class="firstInstall">
+            <h1 class="noData">Looks like you don't have any data to show!</h1>
+            <button class="ui blue button addSite" style="display: inline-block">
+                <i class="plus icon"></i> Add
+            </button>
+            <div class="ui flowing popup top left transition wide hidden">
+                <form class="ui form">
+                    <div class="field">
+                        <input type="text" name="hostname" class='hostnameField' placeholder="server hostname">
+                    </div>
+                    <center>
+                        <button class="ui blue center basic button submitSite" type="submit">Submit</button>
+                        <div class="ui middle aligned divided list">
+                            <div class="item" v-for="allowed in addedServers">
+                                <div class="content">
+                                    @{{allowed}}
+                                </div>
+                            </div>
+                    </center>
+                </form>
+            </div>
+        <h1 class="noData">a hostname, and you're all set to start collecting data!</h1>
         </div>
     </div>
 </div>

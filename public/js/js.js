@@ -122,7 +122,9 @@ $(document).ready(function () {
     $('.submitSite').click(function(e) {
         e.preventDefault();
         that = this;
-        vue.addedServers.push($('.hostnameField').val());
+        if (vue.addedServers != null) {
+            vue.addedServers.push($('.hostnameField').val());
+        }
         $.post('/addServer',{"hostname":$('.hostnameField').val(),"_token":$('.csrfToken').val()} ,function() {
             $(that).text('Processing...');
         }).done(function() {

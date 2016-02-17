@@ -96,3 +96,8 @@ td {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.noData {
+    display: inline;
+
+}
