@@ -57,8 +57,8 @@ The bandwidth usage is recorded as bytes sent over the network interface in TX(o
 
 ![bandwidth](https://s3-us-west-2.amazonaws.com/8201393personal/s/rvbv5.png)
 
-##### Why are machine names used to destinguish servers, and not IP addressed?
-Reason being, if you're on an EC2 instance for example, then everytime you start/stop that instance, you may loose the associated IP, hence the hostname as the servers identifier - it prevents you from constantly having to update the IP whitelist
+##### Why are machine names used to destinguish servers, and not IP addresses?
+Reason being, if you're on an EC2 instance for example, then everytime you start/stop that instance, you may lose the associated IP, hence the hostname as the servers identifier - it prevents you from constantly having to update the IP whitelist
 
 
 
