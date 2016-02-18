@@ -39,7 +39,7 @@ You can then select from different servers you have collected from:
 #### TODO
 - [x] detect system (agent)
 - [x] Better multiserver handling
-- [X] Dockerize
+- [X] Dockerize (see [repo](https://github.com/jwdeitch/SystemBro-docker))
 - [X] Getting started / after install page
 - [ ] Password auth to access app
 - [ ] Convert agent to Go
