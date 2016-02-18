@@ -39,9 +39,9 @@ You can then select from different servers you have collected from:
 #### TODO
 - [x] detect system (agent)
 - [x] Better multiserver handling
-- [ ] Getting started / after install page
+- [X] Dockerize
+- [X] Getting started / after install page
 - [ ] Password auth to access app
-- [ ] Dockerize
 - [ ] Convert agent to Go
 - [ ] Refactor backend
 
