@@ -248,33 +248,18 @@
 
     <div class="mainContent" v-else>
         <div class="firstInstall">
-            <h1 class="noData">Looks like you don't have any data to show!</h1>
-            <button class="ui blue button addSite" style="display: inline-block">
-                <i class="plus icon"></i> Add
-            </button>
-            <div class="ui flowing popup top left transition wide hidden">
-                <form class="ui form">
-                    <div class="field">
-                        <input type="text" name="hostname" class='hostnameField' placeholder="server hostname">
+            <div class="ui icon massive message">
+                <i class="sitemap icon"></i>
+                <div class="content">
+                    <div class="header">
+                        Hey there!
                     </div>
-                    <center>
-                        <button class="ui blue center basic button submitSite" type="submit">Submit</button>
-                        <div class="ui middle aligned divided list">
-                            <div class="item" v-for="allowed in addedServers">
-                                <div class="content">
-                                    @{{allowed}}
-                                </div>
-                            </div>
-                    </center>
-                </form>
+                    <p>Looks like there isn't any data to show. Install the <a href="https://github.com/jwdeitch/SystemBroAgent" target="_blank">agent</a> on the machine you want to collect stats from, and you're good to go!</p>
+                </div>
             </div>
-        <h1 class="noData">a hostname, and you're all set to start collecting data!</h1>
         </div>
     </div>
 </div>
-
-</div>
-
 
 </body>
 </html>

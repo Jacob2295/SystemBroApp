@@ -88,7 +88,16 @@ $(document).ready(function () {
                     ]
                 };
                 var myLineChart = new Chart(ctx).Line(data,{multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>%"});
-
+                $('.addSite').popup({
+                    hoverable: true,
+                    on: 'click',
+                    duration: 50,
+                    position: 'bottom center',
+                    delay: {
+                        show: 0,
+                        hide: 0
+                    }
+                });
                 $('.ui.dropdown').dropdown({
                     onChange: function (val) {
                         vue.collectionItems.forEach(function (server, index) {
@@ -142,14 +151,4 @@ $(document).ready(function () {
         vue.getData();
         console.log('Refreshed data');
     }, 30000);
-    $('.addSite').popup({
-        hoverable: true,
-        on: 'click',
-        duration: 50,
-        position: 'bottom center',
-        delay: {
-            show: 0,
-            hide: 0
-        }
-    });
 });
