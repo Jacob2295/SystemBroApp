@@ -5,7 +5,10 @@
 ![App](https://s3-us-west-2.amazonaws.com/8201393personal/s/lkuw7.jpg)
 
 
-Each agent reports statistics every minute to this application; these stats include server resource usage and access log entries. The machine name distinguishes individual machines. Each result is stored in a mongoDB collection, though beforehand each access log line is parsed for location and platform information. 
+#### Install the agent on your machines, run them on a cron, and you're good to go
+
+
+---
 
 **Note: The agent will clear the webserver's access.log file**
 
@@ -22,8 +25,7 @@ Each agent reports statistics every minute to this application; these stats incl
 - Apache 2.4.12
 - Ubuntu 14.04
 
-
-This app can circumvent adblockers (Google Analytics / Piwik etc.. can sometimes be blocked by the client). You can update the GeoLocation database by running ```php artisan maxmind:update``` from the projects home directory. This will pull the latest MaxMind DB and verify it's checksum. The web interface refreshes every minute automatically.
+---
 
 You can add servers that the app should accept queries for:
 ![addServer](https://s3-us-west-2.amazonaws.com/8201393personal/s/zqhly.jpg)
@@ -36,11 +38,12 @@ You can then select from different servers you have collected from:
 
 **Note: I strongly recommend installing this application behind an implementation of HTTP auth**
 
+---
 #### TODO
 - [x] detect system (agent)
 - [x] Better multiserver handling
-- [X] Dockerize (see [repo](https://github.com/jwdeitch/SystemBro-docker))
-- [X] Getting started / after install page
+- [x] Dockerize (see [repo](https://github.com/jwdeitch/SystemBro-docker))
+- [x] Getting started / after install page
 - [ ] Password auth to access app
 - [ ] Convert agent to Go
 - [ ] Refactor backend
@@ -50,19 +53,25 @@ This product includes GeoLite2 data created by MaxMind, available from
 [http://www.maxmind.com](http://www.maxmind.com).
 
 
-
+---
 #### Technical notes
 
-The bandwidth usage is recorded as bytes sent over the network interface in TX(outbound) and RX(inbound), though these values can spontaneously zero. To remedy this, we can add the local maximums between any arbitrary time interval.
+- I am working on a way to efficiently ensure indexes in Mongo.. I don't want to call ensureIndex() on every call so I am experimenting with other options. If you notice the app is becoming sluggish, I would certainly profile mongo and ensure proper indexes. I am more than happy to help with that if you open a github issue or email me. 
 
-![bandwidth](https://s3-us-west-2.amazonaws.com/8201393personal/s/rvbv5.png)
-
-##### Why are machine names used to destinguish servers, and not IP addresses?
+- Why are machine names used to destinguish servers, and not IP addresses?
 Reason being, if you're on an EC2 instance for example, then everytime you start/stop that instance, you may lose the associated IP, hence the hostname as the servers identifier - it prevents you from constantly having to update the IP whitelist
 
+- You can update the GeoLocation database by running ```php artisan maxmind:update``` from the projects home directory. This will pull the latest MaxMind DB and verify it's checksum. 
 
+- The web interface refreshes every minute automatically.
 
+---
+one more quick note:
 
+![bandwidth](https://s3-us-west-2.amazonaws.com/8201393personal/s/rvbv5.png)
+The bandwidth usage is recorded as bytes sent over the network interface in TX(outbound) and RX(inbound), though these values can spontaneously zero. To remedy this, we can add the local maximums between any arbitrary time interval. (see below)
+
+---
 ### License
 
 The MIT License (MIT)
