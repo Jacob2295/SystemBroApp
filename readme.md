@@ -66,10 +66,10 @@ Reason being, if you're on an EC2 instance for example, then everytime you start
 - The web interface refreshes every minute automatically.
 
 ---
-one more quick note:
+**one more quick note:**
 
-![bandwidth](https://s3-us-west-2.amazonaws.com/8201393personal/s/rvbv5.png)
 The bandwidth usage is recorded as bytes sent over the network interface in TX(outbound) and RX(inbound), though these values can spontaneously zero. To remedy this, we can add the local maximums between any arbitrary time interval. (see below)
+![bandwidth](https://s3-us-west-2.amazonaws.com/8201393personal/s/rvbv5.png)
 
 ---
 ### License
